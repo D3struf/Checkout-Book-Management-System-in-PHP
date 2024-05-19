@@ -7,7 +7,7 @@
     <link rel="icon" type="image/x-icon" href="./assets/img/logo.png">
 
     <!-- js -->
-    <script src="script.js"></script>
+    <script src="./assets/script/script.js"></script>
 
     <!-- css -->
     <style>

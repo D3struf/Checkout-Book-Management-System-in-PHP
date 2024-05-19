@@ -7,7 +7,7 @@
     <link rel="icon" type="image/x-icon" href="./assets/img/logo.png">
 
     <!-- js -->
-    <script src="script.js"></script>
+    <script src="./assets/script/script.js"></script>
 
     <!-- css -->
     <style>
@@ -91,7 +91,7 @@
             <form method="post" class=" pb-4 pr-4 bg-gray-900 flex flex-row items-center" >
                 <label for="table-search" class="sr-only" >Search</label>
                 <div class="relative pt-4 px-4">
-                    <input type="text" id="table-search" name="search" autocomplete="off" class="block h-10 ps-4 text-sm text-secondary_text align-center rounded-lg w-80 bg-gray-700 dark:border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500" placeholder="Search for book title">
+                    <input type="text" id="table-search" name="search" autocomplete="off" class="block h-10 ps-4 text-sm text-secondary_text align-center rounded-lg w-80 bg-gray-700 dark:border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500" placeholder="Search for member's last name">
                 </div>
                 <button class=" h-10 mt-5 -ms-14 z-10 px-2 text-primary_text" name="submit">
                     <svg class="w-4 h-4  text-primary_text" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
@@ -189,7 +189,7 @@
                 for ($page_number = 1; $page_number <= $total_pages; $page_number++) {
                     $class = ($page_number == $current_page) ? "bg-gray-700" : "bg-gray-800";
                     echo'<li>';
-                    echo'    <a href="book.php?page=' .$page_number. '" class="flex items-center justify-center px-3 h-8 leading-tight text-secondary_text '.$class.' border border-gray-700 text-gray-400 hover:bg-gray-700 hover:text-white">' .$page_number. '</a>
+                    echo'    <a href="member.php?page=' .$page_number. '" class="flex items-center justify-center px-3 h-8 leading-tight text-secondary_text '.$class.' border border-gray-700 text-gray-400 hover:bg-gray-700 hover:text-white">' .$page_number. '</a>
                     </li>';
                 }
                 echo '</ul>';

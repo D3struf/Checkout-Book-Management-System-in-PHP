@@ -7,7 +7,7 @@
     <link rel="icon" type="image/x-icon" href="./assets/img/logo.png">
 
     <!-- js -->
-    <script src="script.js"></script>
+    <script src="./assets/script/script.js"></script>
 
     <!-- css -->
     <style>
@@ -92,28 +92,29 @@
 
         <div class="flex flex-row gap-4">
             <div class=" flex flex-col gap-4 h-[80%] w-1/2 ">
+                <!-- Adding Checkouts -->
                 <div class=" h-fit mt-4 p-4 bg-card shadow-lg shadow-shadow rounded-md">
                     <form class="max-w-sm mx-auto mb-4" method="post">
                         <label for="countries" class="block mb-2 mt-4 text-sm font-medium text-primary_text">Select Member</label>
-                        <select id="countries" class="border text-secondary_text text-sm rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 focus:ring-blue-500 focus:border-blue-500">
+                        <select id="countries" name="checkout-member" autocomplete="off" class="border text-secondary_text text-sm rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 focus:ring-blue-500 focus:border-blue-500">
                             <option selected="" class=" text-primary_text">Select Member</option>
                             <?php
                                 $getQuery = "SELECT * FROM librarymember";
                                 $result = mysqli_query($conn, $getQuery);
                                 while ($row = mysqli_fetch_array($result)) {
-                                    echo '<option class="text-primary_text" value="'. $row['id']. '">'. $row['FirstName']. ' '. $row['LastName']. '</option>';
+                                    echo '<option class="text-primary_text" value="'. $row['MemberID']. '">'. $row['FirstName']. ' '. $row['LastName']. '</option>';
                                 }
                             ?>
                         </select>
                         <label for="countries" class="block mb-2 mt-4 text-sm font-medium text-primary_text">Select Book</label>
-                        <select id="countries" class="border text-secondary_text text-sm rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 focus:ring-blue-500 focus:border-blue-500">
+                        <select id="countries" name="checkout-book" autocomplete="off" class="border text-secondary_text text-sm rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 focus:ring-blue-500 focus:border-blue-500">
                             <option selected="" class=" text-primary_text">Select Book</option>
                             <?php
-                                $getQuery = "SELECT `book`.`Title` 
-                                FROM book LEFT JOIN checkout ON `book`.`BookID` = `checkout`.`BookID` WHERE `checkout`.`BookID` IS NOT NULL;";
+                                $getQuery = "SELECT `book`.`Title`, `book`.`BookID` 
+                                FROM book LEFT JOIN checkout ON `book`.`BookID` = `checkout`.`BookID` WHERE `checkout`.`ReturnDates` IS NOT NULL;";
                                 $result = mysqli_query($conn, $getQuery);
                                 while ($row = mysqli_fetch_array($result)) {
-                                    echo '<option class="text-primary_text" value="'. $row['id']. '">'. $row['Title']. '</option>';
+                                    echo '<option class="text-primary_text" value="'. $row['BookID']. '">'. $row['Title']. '</option>';
                                 }
                             ?>
                         </select>
@@ -122,18 +123,41 @@
                             Checkout
                         </button>
                     </form>
+                    <!-- Adding Checkouts -->
+                    <?php
+                        include('config/db.php');
+                        if (isset($_POST['submit-checkout'])) {
+                            // Get form data
+                            $checkoutMember = $_POST['checkout-member'];
+                            $checkoutBook = $_POST['checkout-book'];
+                            echo $checkoutMember;
+                            echo $checkoutBook;
+                            $currentDateTime = date('Y-m-d H:i:s');
+                            echo $currentDateTime;
+
+                            $setQuery = "INSERT INTO `checkout` (`CheckoutID`, `BookID`, `MemberID`, `CheckoutDates`, `ReturnDates`) 
+                            VALUES (NULL, '$checkoutBook', '$checkoutMember', '$currentDateTime', NULL);";
+                            if (mysqli_query($conn, $setQuery)) {
+                                echo '<script>alert("Checkout successfully!");</script>';
+                            } else {
+                                echo '<script>alert("Error: ' . $setQuery . '<br>' . mysqli_error($conn) . '");</script>';
+                            }
+                        }
+                    ?>
                 </div>
+                <!-- Checkouts per Month Chart -->
                 <div class=" p-4 bg-card shadow-lg shadow-shadow rounded-md">
                     <h2 class="text-secondary_text text-md  font-semibold">Checkouts per Month</h2>
                     <canvas id="myChart" class="mx-auto" height="275" width="450"></canvas>
                 </div>
             </div>
+            <!-- Searching and viewing Checkouts -->
             <div class=" h-[80vh] w-full mt-4 p-4 bg-card shadow-lg shadow-shadow rounded-md flex flex-col gap-4 hover:cursor:pointer">
                 <div class="relative overflow-x-auto shadow-md sm:rounded-lg mt-3">
                     <form method="post" class=" pb-4 pr-4 bg-gray-900 flex flex-row items-center" >
                         <label for="table-search" class="sr-only" >Search</label>
                         <div class="relative pt-4 px-4">
-                            <input type="text" id="table-search" name="search" autocomplete="off" class="block h-10 ps-4 text-sm text-secondary_text align-center rounded-lg w-80 bg-gray-700 dark:border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500" placeholder="Search for book title">
+                            <input type="text" id="table-search" name="search" autocomplete="off" class="block h-10 ps-4 text-sm text-secondary_text align-center rounded-lg w-80 bg-gray-700 dark:border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500" placeholder="Search for checkout id">
                         </div>
                         <button class=" h-10 mt-5 -ms-14 z-10 px-2 text-primary_text" name="submit">
                         <svg class="w-4 h-4  text-primary_text" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
@@ -242,6 +266,7 @@
             </div>
         </div>
     </main>
+    <!-- Fetch Data for Chart -->
     <?php
         $getQuery = "   
         SELECT
@@ -269,6 +294,15 @@
         }
         ?><h2 id="data" class=" hidden" data-count="<?php echo $data?>"></h2><?
         ?><h2 id="labels" class=" hidden" data-count="<?php echo $labels?>"></h2><?
+    ?>
+
+    <!-- To delete a certain book -->
+    <?php 
+        include('config/db.php');
+        if (isset($_GET['deleteid'])) {
+            $id = $_GET['deleteid'];
+            $delete = mysqli_query($conn, "DELETE FROM `checkout` WHERE `CheckoutID` = '$id'");
+        }
     ?>
 
     <script>
@@ -331,7 +365,7 @@
                 $text = ($row['ReturnDates'] != NULL) ? "Returned" : "Checked Out";
                 $class = ($text == "Returned") ? " text-lightgreen " : " text-red-600 ";
 
-                echo '<tr class="odd:bg-darkgray even:bg-shadow border-b border-gray-700"><th scope="row" class="px-5 py-4 font-medium text-primary_text whitespace-nowrap">' .$row['CheckoutID'].'</th><td class="px-5 py-4 text-secondary_text">' .$row['BookID'].'</td><td class="px-5 py-4 text-secondary_text">'.$row['MemberID'].'</td><td class="px-5 py-4 text-secondary_text">'.$row['CheckoutDates'].'</td><td class="px-5 py-4 text-secondary_text">'.$row['ReturnDates'].'</td><td class="px-5 py-4 font-bold ' .$class. ' ">'.$text.'</td><td class="px-5 py-1 text-secondary_text"><div class=" flex flex-row gap-2"><a href="member.php?deleteid=' .$row['MemberID'].'" class=" py-1 px-3 text-primary_text bg-red-600 rounded-md hover:cursor:pointer">Delete</a></div></td></tr>';
+                echo '<tr class="odd:bg-darkgray even:bg-shadow border-b border-gray-700"><th scope="row" class="px-5 py-4 font-medium text-primary_text whitespace-nowrap">' .$row['CheckoutID'].'</th><td class="px-5 py-4 text-secondary_text">' .$row['BookID'].'</td><td class="px-5 py-4 text-secondary_text">'.$row['MemberID'].'</td><td class="px-5 py-4 text-secondary_text">'.$row['CheckoutDates'].'</td><td class="px-5 py-4 text-secondary_text">'.$row['ReturnDates'].'</td><td class="px-5 py-4 font-bold ' .$class. ' ">'.$text.'</td><td class="px-5 py-1 text-secondary_text"><div class=" flex flex-row gap-2"><a href="checkout.php?deleteid=' .$row['CheckoutID'].'" class=" py-1 px-3 text-primary_text bg-red-600 rounded-md hover:cursor:pointer">Delete</a></div></td></tr>';
             }
         }
     }
