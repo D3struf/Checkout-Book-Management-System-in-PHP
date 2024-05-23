@@ -6,20 +6,33 @@ This project is a Checkout Book Management System designed to manage the checkou
 
 - [Checkout Book Management System](#checkout-book-management-system)
   - [Table of Contents](#table-of-contents)
+  - [Assigned Database system](#assigned-database-system)
   - [Features](#features)
   - [Technologies Used](#technologies-used)
   - [Usage](#usage)
   - [What I Learned](#what-i-learned)
   - [Documentation](#documentation)
     - [Example SQL Queries](#example-sql-queries)
-    - [Screenshot of Tables in the phpMyAdmin database](#screenshot-of-tables-in-the-phpmyadmin-database)
+    - [Screenshots of Tables in the phpMyAdmin database](#screenshots-of-tables-in-the-phpmyadmin-database)
+    - [Screenshots of the Website Pages](#screenshots-of-the-website-pages)
   - [Contributing](#contributing)
   - [License](#license)
 
+## Assigned Database system
+
+- Tables:
+  - LibraryMember (MemberID, FirstName, LastName, MembershipType)
+  - Book (BookID, Title, Author, ISBN)
+  - Checkout (CheckoutID, MemberID, BookID, CheckoutDate, ReturnDate)
+- Question:
+  - Design a database to manage a library's members, books, and checkouts. Ensure that each book can be checked out by only one member at a time.
+
 ## Features
 
-- Add new books to the library
-- Delete books from the library
+- CRUD Function to all libraries
+  - Add new books to the library
+  - Edit existing table rows
+  - Delete books from the library
 - Search for books by title
 - Track the number of checkouts each month
 - Responsive design using Tailwind CSS and Flowbite
@@ -36,9 +49,10 @@ This project is a Checkout Book Management System designed to manage the checkou
 
 ## Usage
 
-- To add a new book, click the add button (plus icon), fill out the form in the modal, and submit.
-- To delete a book, click the delete button next to the book entry.
-- To search for a book, use the search bar at the top of the page.
+- To add a new book, membership, or checkouts, click the add button (plus icon), fill out the form in the modal, and submit.
+- To edit a book, membership, or checkouts, click the edit button in the action column, fill out the changes to be set, and submit.
+- To delete a book, membership, or checkouts, click the delete button to the action column.
+- To search for a book, member's last name, and checkout id, use the search bar at the top of the page.
 
 ## What I Learned
 
@@ -47,6 +61,7 @@ Throughout this project, I gained valuable experience and knowledge in various a
 - **PHP and phpMyAdmin for Database Management**: Learned how to use PHP to interact with MySQL databases via phpMyAdmin, this includes
   - **Creating Tables**: Learned how to define and create tables in the database. This includes creating primary keys and foreign keys.
   - **Inserting Data**: Gained skills in adding records to the tables.
+  - **Updating Data**: Experienced to update existing table rows and display results.
   - **Running Queries**: Developed the ability to execute various types of SQL queries to manipulate and retrieve data.
   - **Creating Relationships**: Able to create relationships between different tables.
 - **SQL Queries**: Developed skills in writing SQL queries for data manipulation and retrieval, including complex joins and aggregation functions.
@@ -77,6 +92,8 @@ LEFT JOIN `checkout` ON `book`.`BookID` = `checkout`.`BookID`
 WHERE `checkout`.`BookID` IS NOT NULL;
 ```
 
+![Available Books](./assets/img/image-4.png)
+
 **Get the Frequency per Month in the Year 2023:**
 
 ```sql
@@ -94,6 +111,8 @@ ORDER BY
     MONTH(`checkoutDates`) DESC;
 ```
 
+![Checkout Chart 2023](./assets/img/image-5.png)
+
 **Searching for Books:**
 
 ```sql
@@ -103,7 +122,9 @@ LEFT JOIN `checkout` ON `checkout`.`BookID` = `book`.`BookID`
 WHERE `book`.`Title` = '$search';
 ```
 
-### Screenshot of Tables in the phpMyAdmin database
+![Search for books](./assets/img/image-6.png)
+
+### Screenshots of Tables in the phpMyAdmin database
 
 ![My Database Tables](./assets/img/image.png)
 
@@ -112,6 +133,16 @@ WHERE `book`.`Title` = '$search';
 ![Checkout Table](./assets/img/image-2.png)
 
 ![Library Member Table](./assets/img/image-3.png)
+
+### Screenshots of the Website Pages
+
+![Report Page](./assets/img/image-7.png)
+
+![Book Page](./assets/img/image-8.png)
+
+![Member Page](./assets/img/image-9.png)
+
+![Checkout Page](./assets/img/image-10.png)
 
 ## Contributing
 

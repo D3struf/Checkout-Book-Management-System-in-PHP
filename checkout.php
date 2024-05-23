@@ -90,6 +90,55 @@
     <main class=" mx-10 my-3">
         <h1 class=" text-primary_text font-bold text-2xl">Checkout Book</h1>
 
+        <!-- Edit Row Modal -->
+        <div id="edit" class=" hidden h-16 w-full mt-3 bg-card">
+            <!-- Modal body -->
+            <form class=" p-4 md:p-3 flex flex-row justify-between" method="post" action="update.php">
+                <div class=" flex flex-row gap-10">
+                    <div class="row-span-2">
+                        <label for="checkoutID" class="mb-2 text-sm font-medium text-primary_text">Checkout ID</label>
+                        <input type="text" autocomplete="off" name="checkoutID" id="edit-checkoutID"
+                            class=" border text-secondary_text text-sm rounded-lg p-2.5 bg-gray-600 border-gray-500 placeholder-gray-400 focus:ring-primary-500 focus:border-primary-500"
+                            placeholder="Type checkout id" required="" readonly>
+                    </div>
+                    <div class="row-span-2">
+                        <label for="memberid" class="mb-2 text-sm font-medium text-primary_text">Member ID</label>
+                        <input type="text" autocomplete="off" name="memberid" id="edit-memberID"
+                            class=" border text-secondary_text text-sm rounded-lg p-2.5 bg-gray-600 border-gray-500 placeholder-gray-400 focus:ring-primary-500 focus:border-primary-500"
+                            placeholder="Type member id" required="" readonly>
+                    </div>
+                    <div class="row-span-2">
+                        <label for="bookID" class=" mb-2 text-sm font-medium text-primary_text">Book ID</label>
+                        <input type="text" autocomplete="off" name="bookID" id="edit-bookID"
+                            class=" border text-secondary_text text-sm rounded-lg p-2.5 bg-gray-600 border-gray-500 placeholder-gray-400 focus:ring-primary-500 focus:border-primary-500"
+                            placeholder="John Doe" required="" readonly>
+                    </div>
+                    <div class="row-span-2">
+                        <label for="checkoutDate" class=" mb-2 text-sm font-medium text-primary_text">Checkout Date</label>
+                        <input type="text" autocomplete="off" name="checkoutDate" id="edit-checkoutDate"
+                            class=" border text-secondary_text text-sm rounded-lg p-2.5 bg-gray-600 border-gray-500 placeholder-gray-400 focus:ring-primary-500 focus:border-primary-500"
+                            placeholder="000000000-0" required="" readonly>
+                    </div>
+                    <div class="row-span-2">
+                        <label for="returnDate" class=" mb-2 text-sm font-medium text-primary_text">Return Date</label>
+                        <input type="datetime-local" autocomplete="off" name="returnDate" id="edit-returnDate"
+                            class=" border text-secondary_text text-sm rounded-lg p-2.5 bg-gray-600 border-gray-500 placeholder-gray-400 focus:ring-primary-500 focus:border-primary-500"
+                            placeholder="000000000-0" required="">
+                    </div>
+                </div>
+                <button type="submit" name="submit-edit-checkout" onclick="hideEditModal()"
+                    class=" text-white inline-flex items-center bg-blue-700 focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center bg-blue-600 hover:bg-blue-700 focus:ring-blue-800">
+                    <svg class="me-1 -ms-1 w-5 h-5" fill="currentColor" viewBox="0 0 20 20"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd"
+                            d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
+                            clip-rule="evenodd"></path>
+                    </svg>
+                    Submit Checkout
+                </button>
+            </form>
+        </div>
+
         <div class="flex flex-row gap-4">
             <div class=" flex flex-col gap-4 h-[80%] w-1/2 ">
                 <!-- Adding Checkouts -->
@@ -223,7 +272,7 @@
                                         echo '<tr><td colspan="5" class="px-5 py-4 text-secondary_text">No results found.</td></tr>';
                                     }
                                 } else {
-                                    $limit = 7;
+                                    $limit = 5;
                                     $getQuery = "SELECT `checkout`.*
                                     FROM `checkout`
                                     ORDER BY CheckoutID DESC;";
@@ -251,7 +300,7 @@
                 </div>
                 <nav class="flex items-center flex-column flex-wrap md:flex-row justify-between pt-4" aria-label="Table navigation">
                     <?php
-                        echo '<span class="text-sm font-normal text-gray-500 dark:text-gray-400 mb-4 md:mb-0 block w-full md:inline md:w-auto">Showing <span class="font-semibold text-gray-900 dark:text-white">1-7</span> of <span class="font-semibold text-gray-900 dark:text-white">'.$total_pages.'</span></span>';
+                        echo '<span class="text-sm font-normal text-gray-500 dark:text-gray-400 mb-4 md:mb-0 block w-full md:inline md:w-auto">Showing <span class="font-semibold text-gray-900 dark:text-white">1-5</span> of <span class="font-semibold text-gray-900 dark:text-white">'.$total_pages.'</span></span>';
                         
                         echo '<ul class="inline-flex -space-x-px rtl:space-x-reverse text-sm h-8">';
                         for ($page_number = 1; $page_number <= $total_pages; $page_number++) {
@@ -305,6 +354,7 @@
         }
     ?>
 
+    <!-- To generate Chart -->
     <script>
         var data = document.querySelector('#data').getAttribute('data-count');
         
@@ -352,6 +402,26 @@
             }
         });
     </script>
+
+    <!-- Script to show editing form -->
+    <script>
+        function showEditModal(event, checkoutId, bookId, memberId, checkoutDate, returnDate) {
+            event.preventDefault();
+            document.getElementById('edit-checkoutID').value = checkoutId;
+            document.getElementById('edit-bookID').value = bookId;
+            document.getElementById('edit-memberID').value = memberId;
+            document.getElementById('edit-checkoutDate').value = checkoutDate;
+            if (returnDate != '') {
+                document.getElementById('edit-returnDate').value = returnDate;
+                document.getElementById('edit-returnDate').setAttribute('readonly', 'readonly');
+            }
+            document.getElementById('edit').classList.remove('hidden');
+        }
+
+        function hideEditModal() {
+            document.getElementById('edit').classList.add('hidden');
+        }
+    </script>
 </body>
 </html>
 
@@ -365,7 +435,7 @@
                 $text = ($row['ReturnDates'] != NULL) ? "Returned" : "Checked Out";
                 $class = ($text == "Returned") ? " text-lightgreen " : " text-red-600 ";
 
-                echo '<tr class="odd:bg-darkgray even:bg-shadow border-b border-gray-700"><th scope="row" class="px-5 py-4 font-medium text-primary_text whitespace-nowrap">' .$row['CheckoutID'].'</th><td class="px-5 py-4 text-secondary_text">' .$row['BookID'].'</td><td class="px-5 py-4 text-secondary_text">'.$row['MemberID'].'</td><td class="px-5 py-4 text-secondary_text">'.$row['CheckoutDates'].'</td><td class="px-5 py-4 text-secondary_text">'.$row['ReturnDates'].'</td><td class="px-5 py-4 font-bold ' .$class. ' ">'.$text.'</td><td class="px-5 py-1 text-secondary_text"><div class=" flex flex-row gap-2"><a href="checkout.php?deleteid=' .$row['CheckoutID'].'" class=" py-1 px-3 text-primary_text bg-red-600 rounded-md hover:cursor:pointer">Delete</a></div></td></tr>';
+                echo '<tr class="odd:bg-darkgray even:bg-shadow border-b border-gray-700"><th scope="row" class="px-5 py-4 font-medium text-primary_text whitespace-nowrap">' .$row['CheckoutID'].'</th><td class="px-5 py-4 text-secondary_text">' .$row['BookID'].'</td><td class="px-5 py-4 text-secondary_text">'.$row['MemberID'].'</td><td class="px-5 py-4 text-secondary_text">'.$row['CheckoutDates'].'</td><td class="px-5 py-4 text-secondary_text">'.$row['ReturnDates'].'</td><td class="px-5 py-4 font-bold ' .$class. ' ">'.$text.'</td><td class="px-5 py-1 text-secondary_text"><div class=" flex flex-row gap-2"><a class=" py-1 px-3 text-primary_text bg-lightgreen rounded-md hover:cursor:pointer" href="" onclick="showEditModal(event, '.$row['CheckoutID'].', \''.$row['BookID'].'\', \''.$row['MemberID'].'\', \''.$row['CheckoutDates'].'\', \''.$row['ReturnDates'].'\')">Edit</a><a href="checkout.php?deleteid=' .$row['CheckoutID'].'" class=" py-1 px-3 text-primary_text bg-red-600 rounded-md hover:cursor:pointer">Delete</a></div></td></tr>';
             }
         }
     }

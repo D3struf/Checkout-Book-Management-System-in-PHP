@@ -87,7 +87,44 @@
     <main class=" mx-10 my-3">
         <h1 class=" text-primary_text font-bold text-2xl">Members</h1>
 
+        <!-- Edit Row Modal -->
+        <div id="edit" class=" hidden h-16 w-full mt-3 bg-card">
+            <!-- Modal body -->
+            <form class=" p-4 md:p-3 flex flex-row justify-between" method="post" action="update.php">
+                <input type="hidden" name="memberID" id="memberID">
+                <div class=" flex flex-row gap-10">
+                    <div class="row-span-2 sm:row-span-1">
+                        <label for="title" class="mb-2 text-sm font-medium text-primary_text">First Name</label>
+                        <input type="text" autocomplete="off" name="first-name" id="edit-first-name" class=" border text-secondary_text text-sm rounded-lg p-2.5 bg-gray-600 border-gray-500 placeholder-gray-400 focus:ring-primary-500 focus:border-primary-500" placeholder="John" required="">
+                    </div>
+                    <div class="row-span-2 sm:row-span-1">
+                        <label for="author" class="mb-2 text-sm font-medium text-primary_text">Last Name</label>
+                        <input type="text" autocomplete="off" name="last-name" id="edit-last-name" class=" border text-secondary_text text-sm rounded-lg p-2.5 bg-gray-600 border-gray-500 placeholder-gray-400 focus:ring-primary-500 focus:border-primary-500" placeholder="Doe" required="">
+                    </div>
+                    <div class="row-span-2">
+                        <label for="category" class="mb-2 text-sm font-medium text-gray-900 dark:text-white">Membership Type</label>
+                        <select id="edit-membership-type" name="membership-type" class=" border text-sm rounded-lg p-2.5 bg-gray-600 border-gray-500 placeholder-gray-400 text-primary_text focus:ring-primary-500 focus:border-primary-500">
+                            <option selected="">Select category</option>
+                            <option value="student">student</option>
+                            <option value="basic">basic</option>
+                            <option value="premium">premium</option>
+                        </select>
+                    </div>
+                </div>
+                <button type="submit" name="submit-edit-member" onclick="hideEditModal()"
+                    class=" text-white inline-flex items-center bg-blue-700 focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center bg-blue-600 hover:bg-blue-700 focus:ring-blue-800">
+                    <svg class="me-1 -ms-1 w-5 h-5" fill="currentColor" viewBox="0 0 20 20"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd"
+                            d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
+                            clip-rule="evenodd"></path>
+                    </svg>
+                    Submit membership
+                </button>
+            </form>
+        </div>
         <div class="relative overflow-x-auto shadow-md sm:rounded-lg mt-3">
+            <!-- Search Last Name -->
             <form method="post" class=" pb-4 pr-4 bg-gray-900 flex flex-row items-center" >
                 <label for="table-search" class="sr-only" >Search</label>
                 <div class="relative pt-4 px-4">
@@ -103,6 +140,7 @@
                     <img class="hover:cursor:pointer" src="./assets/img/icons8-add-50.png" alt="add-book">
                 </button>
             </form>
+            <!-- Show Members -->
             <table class="w-full text-sm text-left rtl:text-right text-primary_text">
                 <thead class="text-xs text-primary_text uppercase bg-blue-900">
                     <tr>
@@ -270,6 +308,22 @@
             }
         }
     ?>
+
+    <!-- Script to show editing form -->
+    <script>
+        function showEditModal(event, memberId, firstname, lastname, membershipType) {
+            event.preventDefault();
+            document.getElementById('memberID').value = memberId;
+            document.getElementById('edit-last-name').value = lastname;
+            document.getElementById('edit-first-name').value = firstname;
+            document.getElementById('edit-membership-type').value = membershipType;
+            document.getElementById('edit').classList.remove('hidden');
+        }
+
+        function hideEditModal() {
+            document.getElementById('edit').classList.add('hidden');
+        }
+    </script>
 </body>
 </html>
 
@@ -280,7 +334,7 @@
         $result = mysqli_query($conn, $sql);
         if (mysqli_num_rows($result) > 0) {
             while ($row = mysqli_fetch_array($result) ) {
-                echo '<tr class="odd:bg-darkgray even:bg-shadow border-b border-gray-700"><th scope="row" class="px-5 py-4 font-medium text-primary_text ">' .$row['MemberID'].'</th><td class="px-5 py-4 font-bold">'.$row['LastName'].'</td><td class="px-5 py-4 text-secondary_text">' .$row['FirstName'].'</td><td class="px-5 py-4 text-secondary_text">'.$row['MembershipType'].'</td><td class="px-5 py-1 text-secondary_text"><div class=" flex flex-row gap-2"><a href="member.php?deleteid=' .$row['MemberID'].'" class=" py-1 px-3 text-primary_text bg-red-600 rounded-md hover:cursor:pointer">Delete</a></div></td></tr>';
+                echo '<tr class="odd:bg-darkgray even:bg-shadow border-b border-gray-700"><th scope="row" class="px-5 py-4 font-medium text-primary_text ">' .$row['MemberID'].'</th><td class="px-5 py-4 font-bold">'.$row['LastName'].'</td><td class="px-5 py-4 text-secondary_text">' .$row['FirstName'].'</td><td class="px-5 py-4 text-secondary_text">'.$row['MembershipType'].'</td><td class="px-5 py-1 text-secondary_text"><div class=" flex flex-row gap-2"><a class=" py-1 px-3 text-primary_text bg-lightgreen rounded-md hover:cursor:pointer" href="" onclick="showEditModal(event, '.$row['MemberID'].', \''.$row['FirstName'].'\', \''.$row['LastName'].'\', \''.$row['MembershipType'].'\')">Edit</a><a href="member.php?deleteid=' .$row['MemberID'].'" class=" py-1 px-3 text-primary_text bg-red-600 rounded-md hover:cursor:pointer">Delete</a></div></td></tr>';
             }
         }
     }
