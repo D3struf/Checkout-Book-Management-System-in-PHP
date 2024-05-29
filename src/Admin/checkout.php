@@ -4,10 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Library Management</title>
-    <link rel="icon" type="image/x-icon" href="./assets/img/logo.png">
+    <link rel="icon" type="image/x-icon" href="../../assets/img/logo.png">
 
     <!-- js -->
-    <script src="./assets/script/script.js"></script>
+    <script src="../../assets/script/script.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
     <!-- css -->
     <style>
@@ -47,21 +48,38 @@
             }
         }
     </script>
+
+    <!-- Books Ajax -->
+    <script type="text/javascript">
+        function loadBooks() {
+            $.ajax({
+                url: "../Utils/book-list.php",
+                success: function(data) {
+                    $("#checkout-book").html(data);
+                }
+            });
+        }
+
+        $(document).ready(function() {
+            loadBooks();
+            setInterval(loadBooks, 10000); // Refresh every 10 seconds
+        });
+    </script>
 </head>
-<body class=" bg-background">
+<body class=" bg-background prevent-select">
 
     <header class=" bg-card shadow-lg shadow-shadow">
         <div class="flex items-center w-full px-6 py-2 justify-between ">
             <div class=" flex flex-row max-sm:flex-row-reverse m-0 max-sm:w-full max-sm:justify-end">
                 <div class=" flex justify-center w-full">
-                    <img src="./assets/img/logo.png" alt="tailwind-logo" class="h-10 w-10">
+                    <img src="../../assets/img/logo.png" alt="tailwind-logo" class="h-10 w-10">
                 </div>
                 <div class=" flex items-center max-sm:flex-col-reverse max-sm:items-start">
                     <ul id="navigation" class=" flex flex-row gap-6 px-8 text-gray-400 font-medium max-sm:hidden max-sm:flex-col max-sm:px-4 max-sm:absolute max-sm:top-14 max-sm:bg-slate-800 max-sm:w-full max-sm:left-0 max-sm:gap-1 max-sm:pb-3 max-sm:rounded-b-lg">
-                        <a class="py-2 px-3 rounded-md hover:bg-hover hover:text-primary_text" href="index.php"><li>Report</li></a>
-                        <a class="py-2 px-3 rounded-md hover:bg-hover hover:text-primary_text" href="book.php"><li>Books</li></a>
-                        <a class="py-2 px-3 rounded-md hover:bg-hover hover:text-primary_text" href="member.php"><li>Members</li></a>
-                        <a class="py-2 px-3 bg-primary_blue rounded-md text-primary_text" href="checkout.php"><li>Checkout</li></a>
+                        <a class="py-2 px-3 rounded-md hover:bg-hover hover:text-primary_text" href="./index.php"><li>Report</li></a>
+                        <a class="py-2 px-3 rounded-md hover:bg-hover hover:text-primary_text" href="./book.php"><li>Books</li></a>
+                        <a class="py-2 px-3 rounded-md hover:bg-hover hover:text-primary_text" href="./member.php"><li>Members</li></a>
+                        <a class="py-2 px-3 bg-primary_blue rounded-md text-primary_text" href="./checkout.php"><li>Checkout</li></a>
                     </ul>
                     <div class=" max-sm:text-gray-400 max-sm:transition-all ">
                         <button onclick="activate()" class=" max-sm:p-2 max-sm:rounded-md max-sm:hover:bg-slate-700 max-sm:hover:text-gray-100 max-sm:cursor-pointer max-sm:active:ring-offset-1 max-sm:active:ring-1 max-sm:active:ring-gray-200">
@@ -79,47 +97,47 @@
                 <h4 class=" font-medium text-gray-400 group-hover:text-gray-100 group-hover:cursor:pointer">John Paul Monter</h4>
                 <button id="toggle" onclick="buttonToggle()" type="button" class="h-10 w-10 rounded-full cursor-pointer active:ring-offset-1 active:ring-1 active:ring-gray-200 group-hover:bg-hover">
                     <a href="https://github.com/D3struf" target="_blank" rel="noopener noreferrer">
-                        <img class="h-10 w-10 rounded-full p-1" src="./assets/img/icons8-github-64.png" alt="github-profile">
+                        <img class="h-10 w-10 rounded-full p-1" src="../../assets//img/icons8-github-64.png" alt="github-profile">
                     </a>
                 </button>
             </div>
         </div>
     </header>
 
-    <?php include('config/db.php'); ?>
+    <?php include('../../config/db.php'); ?>
     <main class=" mx-10 my-3">
         <h1 class=" text-primary_text font-bold text-2xl">Checkout Book</h1>
 
         <!-- Edit Row Modal -->
-        <div id="edit" class=" hidden h-16 w-full mt-3 bg-card">
+        <div id="edit" class=" hidden h-24 w-full mt-3 bg-card rounded-md">
             <!-- Modal body -->
-            <form class=" p-4 md:p-3 flex flex-row justify-between" method="post" action="update.php">
-                <div class=" flex flex-row gap-10">
-                    <div class="row-span-2">
+            <form class=" p-4 md:p-3 flex flex-row justify-between" method="post" action="../Utils/update.php">
+                <div class=" flex flex-row gap-3">
+                    <div class="">
                         <label for="checkoutID" class="mb-2 text-sm font-medium text-primary_text">Checkout ID</label>
                         <input type="text" autocomplete="off" name="checkoutID" id="edit-checkoutID"
                             class=" border text-secondary_text text-sm rounded-lg p-2.5 bg-gray-600 border-gray-500 placeholder-gray-400 focus:ring-primary-500 focus:border-primary-500"
                             placeholder="Type checkout id" required="" readonly>
                     </div>
-                    <div class="row-span-2">
+                    <div class="row-span-2 sm:row-span-1">
                         <label for="memberid" class="mb-2 text-sm font-medium text-primary_text">Member ID</label>
                         <input type="text" autocomplete="off" name="memberid" id="edit-memberID"
                             class=" border text-secondary_text text-sm rounded-lg p-2.5 bg-gray-600 border-gray-500 placeholder-gray-400 focus:ring-primary-500 focus:border-primary-500"
                             placeholder="Type member id" required="" readonly>
                     </div>
-                    <div class="row-span-2">
+                    <div class="row-span-2 sm:row-span-1">
                         <label for="bookID" class=" mb-2 text-sm font-medium text-primary_text">Book ID</label>
                         <input type="text" autocomplete="off" name="bookID" id="edit-bookID"
                             class=" border text-secondary_text text-sm rounded-lg p-2.5 bg-gray-600 border-gray-500 placeholder-gray-400 focus:ring-primary-500 focus:border-primary-500"
                             placeholder="John Doe" required="" readonly>
                     </div>
-                    <div class="row-span-2">
+                    <div class="row-span-2 sm:row-span-1">
                         <label for="checkoutDate" class=" mb-2 text-sm font-medium text-primary_text">Checkout Date</label>
                         <input type="text" autocomplete="off" name="checkoutDate" id="edit-checkoutDate"
                             class=" border text-secondary_text text-sm rounded-lg p-2.5 bg-gray-600 border-gray-500 placeholder-gray-400 focus:ring-primary-500 focus:border-primary-500"
                             placeholder="000000000-0" required="" readonly>
                     </div>
-                    <div class="row-span-2">
+                    <div class="row-span-2 sm:row-span-1">
                         <label for="returnDate" class=" mb-2 text-sm font-medium text-primary_text">Return Date</label>
                         <input type="datetime-local" autocomplete="off" name="returnDate" id="edit-returnDate"
                             class=" border text-secondary_text text-sm rounded-lg p-2.5 bg-gray-600 border-gray-500 placeholder-gray-400 focus:ring-primary-500 focus:border-primary-500"
@@ -127,7 +145,7 @@
                     </div>
                 </div>
                 <button type="submit" name="submit-edit-checkout" onclick="hideEditModal()"
-                    class=" text-white inline-flex items-center bg-blue-700 focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center bg-blue-600 hover:bg-blue-700 focus:ring-blue-800">
+                    class=" text-white inline-flex items-center bg-blue-700 focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center hover:bg-blue-700 focus:ring-blue-800">
                     <svg class="me-1 -ms-1 w-5 h-5" fill="currentColor" viewBox="0 0 20 20"
                         xmlns="http://www.w3.org/2000/svg">
                         <path fill-rule="evenodd"
@@ -143,9 +161,9 @@
             <div class=" flex flex-col gap-4 h-[80%] w-1/2 ">
                 <!-- Adding Checkouts -->
                 <div class=" h-fit mt-4 p-4 bg-card shadow-lg shadow-shadow rounded-md">
-                    <form class="max-w-sm mx-auto mb-4" method="post">
-                        <label for="countries" class="block mb-2 mt-4 text-sm font-medium text-primary_text">Select Member</label>
-                        <select id="countries" name="checkout-member" autocomplete="off" class="border text-secondary_text text-sm rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 focus:ring-blue-500 focus:border-blue-500">
+                    <form class="max-w-sm mx-auto mb-4" method="post" action="../Utils/insert.php">
+                        <label for="checkout-member" class="block mb-2 mt-4 text-sm font-medium text-primary_text">Select Member</label>
+                        <select id="checkout-member" name="checkout-member" autocomplete="off" class="border text-secondary_text text-sm rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 focus:ring-blue-500 focus:border-blue-500">
                             <option selected="" class=" text-primary_text">Select Member</option>
                             <?php
                                 $getQuery = "SELECT * FROM librarymember";
@@ -155,44 +173,16 @@
                                 }
                             ?>
                         </select>
-                        <label for="countries" class="block mb-2 mt-4 text-sm font-medium text-primary_text">Select Book</label>
-                        <select id="countries" name="checkout-book" autocomplete="off" class="border text-secondary_text text-sm rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 focus:ring-blue-500 focus:border-blue-500">
+                        <label for="checkout-book" class="block mb-2 mt-4 text-sm font-medium text-primary_text">Select Book</label>
+                        <select id="checkout-book" name="checkout-book" autocomplete="off" class=" border text-secondary_text text-sm rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 focus:ring-blue-500 focus:border-blue-500">
                             <option selected="" class=" text-primary_text">Select Book</option>
-                            <?php
-                                $getQuery = "SELECT `book`.`Title`, `book`.`BookID` 
-                                FROM book LEFT JOIN checkout ON `book`.`BookID` = `checkout`.`BookID` WHERE `checkout`.`ReturnDates` IS NOT NULL;";
-                                $result = mysqli_query($conn, $getQuery);
-                                while ($row = mysqli_fetch_array($result)) {
-                                    echo '<option class="text-primary_text" value="'. $row['BookID']. '">'. $row['Title']. '</option>';
-                                }
-                            ?>
+                            <!-- automatically insert the realtime list of available books -->
                         </select>
-                        <button type="submit" name="submit-checkout" class=" mt-4 text-white inline-flex items-center bg-blue-700 focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center bg-blue-600 hover:bg-blue-700 focus:ring-blue-800">
+                        <button type="submit" name="submit-checkout" class=" mt-4 text-white inline-flex items-center bg-blue-700 focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center hover:bg-blue-700 focus:ring-blue-800">
                             <svg class="me-1 -ms-1 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd"></path></svg>
                             Checkout
                         </button>
                     </form>
-                    <!-- Adding Checkouts -->
-                    <?php
-                        include('config/db.php');
-                        if (isset($_POST['submit-checkout'])) {
-                            // Get form data
-                            $checkoutMember = $_POST['checkout-member'];
-                            $checkoutBook = $_POST['checkout-book'];
-                            echo $checkoutMember;
-                            echo $checkoutBook;
-                            $currentDateTime = date('Y-m-d H:i:s');
-                            echo $currentDateTime;
-
-                            $setQuery = "INSERT INTO `checkout` (`CheckoutID`, `BookID`, `MemberID`, `CheckoutDates`, `ReturnDates`) 
-                            VALUES (NULL, '$checkoutBook', '$checkoutMember', '$currentDateTime', NULL);";
-                            if (mysqli_query($conn, $setQuery)) {
-                                echo '<script>alert("Checkout successfully!");</script>';
-                            } else {
-                                echo '<script>alert("Error: ' . $setQuery . '<br>' . mysqli_error($conn) . '");</script>';
-                            }
-                        }
-                    ?>
                 </div>
                 <!-- Checkouts per Month Chart -->
                 <div class=" p-4 bg-card shadow-lg shadow-shadow rounded-md">
@@ -266,7 +256,7 @@
                                             $text = ($row['ReturnDates'] != NULL) ? "Returned" : "Checked Out";
                                             $class = ($text == "Returned") ? " text-lightgreen " : " text-red-600 ";
 
-                                            echo '<tr class="odd:bg-darkgray even:bg-shadow border-b border-gray-700"><th scope="row" class="px-5 py-4 font-medium text-primary_text whitespace-nowrap">' .$row['CheckoutID'].'</th><td class="px-5 py-4 text-secondary_text">' .$row['BookID'].'</td><td class="px-5 py-4 text-secondary_text">'.$row['MemberID'].'</td><td class="px-5 py-4 text-secondary_text">'.$row['CheckoutDates'].'</td><td class="px-5 py-4 text-secondary_text">'.$row['ReturnDates'].'</td><td class="px-5 py-4 font-bold ' .$class. ' ">'.$text.'</td><td class="px-5 py-1 text-secondary_text"><div class=" flex flex-row gap-2"><a href="checkout.php?deleteid=' .$row['CheckoutID'].'" class=" py-1 px-3 text-primary_text bg-red-600 rounded-md hover:cursor:pointer">Delete</a></div></td></tr>';
+                                            echo '<tr class="odd:bg-darkgray even:bg-shadow border-b border-gray-700"><th scope="row" class="px-5 py-4 font-medium text-primary_text whitespace-nowrap">' .$row['CheckoutID'].'</th><td class="px-5 py-4 text-secondary_text">' .$row['BookID'].'</td><td class="px-5 py-4 text-secondary_text">'.$row['MemberID'].'</td><td class="px-5 py-4 text-secondary_text">'.$row['CheckoutDates'].'</td><td class="px-5 py-4 text-secondary_text">'.$row['ReturnDates'].'</td><td class="px-5 py-4 font-bold ' .$class. ' ">'.$text.'</td><td class="px-5 py-1 text-secondary_text"><div class=" flex flex-row gap-2"><a class=" py-1 px-3 text-primary_text bg-lightgreen rounded-md hover:cursor:pointer" href="" onclick="showEditModal(event, '.$row['CheckoutID'].', \''.$row['BookID'].'\', \''.$row['MemberID'].'\', \''.$row['CheckoutDates'].'\', \''.$row['ReturnDates'].'\')">Edit</a><a href="checkout.php?deleteid=' .$row['CheckoutID'].'" class=" py-1 px-3 text-primary_text bg-red-600 rounded-md hover:cursor:pointer">Delete</a></div></td></tr>';
                                         }
                                     } else {
                                         echo '<tr><td colspan="5" class="px-5 py-4 text-secondary_text">No results found.</td></tr>';
@@ -315,6 +305,7 @@
             </div>
         </div>
     </main>
+
     <!-- Fetch Data for Chart -->
     <?php
         $getQuery = "   
@@ -347,10 +338,26 @@
 
     <!-- To delete a certain book -->
     <?php 
-        include('config/db.php');
+        include('../../config/db.php');
         if (isset($_GET['deleteid'])) {
             $id = $_GET['deleteid'];
             $delete = mysqli_query($conn, "DELETE FROM `checkout` WHERE `CheckoutID` = '$id'");
+            if ($delete) {
+                ?>
+                    <script type="text/javascript">
+                        alert("Checkout deleted successfully!");
+                        window.location.href = "checkout.php";
+                    </script>;
+                <?php
+            } else {
+                ?>
+                    <script type="text/javascript">
+                        alert("Error deleting Checkout: ' . mysqli_error($conn) . '");
+                        window.location.href = "checkout.php";
+                    </script>;
+                <?php
+            }
+    
         }
     ?>
 
@@ -359,7 +366,6 @@
         var data = document.querySelector('#data').getAttribute('data-count');
         
         data = data.split(' ');
-        console.log(data);
         const MONTHS = [
             'January',
             'February',
@@ -428,7 +434,7 @@
 <!-- get data -->
 <?php 
     function getTableData($sql) {
-        include('config/db.php');
+        include('../../config/db.php');
         $result = mysqli_query($conn, $sql);
         if (mysqli_num_rows($result) > 0) {
             while ($row = mysqli_fetch_array($result) ) {

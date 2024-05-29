@@ -5,10 +5,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Library Management</title>
-    <link rel="icon" type="image/x-icon" href="./assets/img/logo.png">
+    <link rel="icon" type="image/x-icon" href="../../assets/img/logo.png">
 
     <!-- js -->
-    <script src="./assets/script/script.js"></script>
+    <script src="../../assets/script/script.js"></script>
 
     <!-- css -->
     <style>
@@ -52,26 +52,26 @@
     </script>
 </head>
 
-<body class=" bg-background">
+<body class=" bg-background prevent-select">
     <header class=" bg-card shadow-lg shadow-shadow">
         <div class="flex items-center w-full px-6 py-2 justify-between ">
             <div class=" flex flex-row max-sm:flex-row-reverse m-0 max-sm:w-full max-sm:justify-end">
                 <div class=" flex justify-center w-full">
-                    <img src="./assets/img/logo.png" alt="tailwind-logo" class="h-10 w-10">
+                    <img src="../../assets/img/logo.png" alt="tailwind-logo" class="h-10 w-10">
                 </div>
                 <div class=" flex items-center max-sm:flex-col-reverse max-sm:items-start">
                     <ul id="navigation"
                         class=" flex flex-row gap-6 px-8 text-gray-400 font-medium max-sm:hidden max-sm:flex-col max-sm:px-4 max-sm:absolute max-sm:top-14 max-sm:bg-slate-800 max-sm:w-full max-sm:left-0 max-sm:gap-1 max-sm:pb-3 max-sm:rounded-b-lg">
-                        <a class="py-2 px-3 rounded-md hover:bg-hover hover:text-primary_text" href="index.php">
+                        <a class="py-2 px-3 rounded-md hover:bg-hover hover:text-primary_text" href="./index.php">
                             <li>Report</li>
                         </a>
-                        <a class="py-2 px-3 bg-primary_blue rounded-md text-primary_text" href="book.php">
+                        <a class="py-2 px-3 bg-primary_blue rounded-md text-primary_text" href="./book.php">
                             <li>Books</li>
                         </a>
-                        <a class="py-2 px-3 rounded-md hover:bg-hover hover:text-primary_text" href="member.php">
+                        <a class="py-2 px-3 rounded-md hover:bg-hover hover:text-primary_text" href="./member.php">
                             <li>Members</li>
                         </a>
-                        <a class="py-2 px-3 rounded-md hover:bg-hover hover:text-primary_text" href="checkout.php">
+                        <a class="py-2 px-3 rounded-md hover:bg-hover hover:text-primary_text" href="./checkout.php">
                             <li>Checkout</li>
                         </a>
                     </ul>
@@ -97,7 +97,7 @@
                 <button id="toggle" onclick="buttonToggle()" type="button"
                     class="h-10 w-10 rounded-full cursor-pointer active:ring-offset-1 active:ring-1 active:ring-gray-200 group-hover:bg-hover">
                     <a href="https://github.com/D3struf" target="_blank" rel="noopener noreferrer">
-                        <img class="h-10 w-10 rounded-full p-1" src="./assets/img/icons8-github-64.png"
+                        <img class="h-10 w-10 rounded-full p-1" src="../../assets/img/icons8-github-64.png"
                             alt="github-profile">
                     </a>
                 </button>
@@ -105,37 +105,37 @@
         </div>
     </header>
 
-    <?php include('config/db.php'); ?>
+    <?php include('../../config/db.php'); ?>
     <main class=" mx-10 my-3">
         <h1 class=" text-primary_text font-bold text-2xl">Books</h1>
 
         <!-- Edit Row Modal -->
         <div id="edit" class=" hidden h-16 w-full mt-3 bg-card">
             <!-- Modal body -->
-            <form class=" p-4 md:p-3 flex flex-row justify-between" method="post" action="update.php">
+            <form class=" p-4 md:p-3 flex flex-row justify-between" method="post" action="../Utils/update.php">
                 <input type="hidden" name="bookID" id="bookID">
                 <div class=" flex flex-row gap-10">
                     <div class="row-span-2">
                         <label for="title" class="mb-2 text-sm font-medium text-primary_text">Title</label>
                         <input type="text" autocomplete="off" name="title" id="edit-title"
                             class=" border text-secondary_text text-sm rounded-lg p-2.5 bg-gray-600 border-gray-500 placeholder-gray-400 focus:ring-primary-500 focus:border-primary-500"
-                            placeholder="Type book title" required="" >
+                            placeholder="Type book title" required>
                     </div>
                     <div class="row-span-2">
                         <label for="author" class=" mb-2 text-sm font-medium text-primary_text">Author</label>
                         <input type="text" autocomplete="off" name="author" id="edit-author"
                             class=" border text-secondary_text text-sm rounded-lg p-2.5 bg-gray-600 border-gray-500 placeholder-gray-400 focus:ring-primary-500 focus:border-primary-500"
-                            placeholder="John Doe" required="">
+                            placeholder="John Doe" required>
                     </div>
                     <div class="row-span-2">
                         <label for="isbn" class=" mb-2 text-sm font-medium text-primary_text">ISBN</label>
                         <input type="text" autocomplete="off" name="isbn" id="edit-isbn"
                             class=" border text-secondary_text text-sm rounded-lg p-2.5 bg-gray-600 border-gray-500 placeholder-gray-400 focus:ring-primary-500 focus:border-primary-500"
-                            placeholder="000000000-0" required="">
+                            placeholder="000000000-0" required>
                     </div>
                 </div>
                 <button type="submit" name="submit-edit-book" onclick="hideEditModal()"
-                    class=" text-white inline-flex items-center bg-blue-700 focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center bg-blue-600 hover:bg-blue-700 focus:ring-blue-800">
+                    class=" text-white inline-flex items-center focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center bg-blue-600 hover:bg-blue-700 focus:ring-blue-800">
                     <svg class="me-1 -ms-1 w-5 h-5" fill="currentColor" viewBox="0 0 20 20"
                         xmlns="http://www.w3.org/2000/svg">
                         <path fill-rule="evenodd"
@@ -167,7 +167,7 @@
                     <h2
                         class=" text-secondary_text font-semibold text-lg -ml-10 group-hover:text-primary_text hover:cursor:pointer">
                         Add</h2>
-                    <img class="hover:cursor:pointer" src="./assets/img/icons8-add-50.png" alt="add-book">
+                    <img class="hover:cursor:pointer" src="../../assets/img/icons8-add-50.png" alt="add-book">
                 </button>
             </form>
             <table class="w-full text-sm text-left rtl:text-right text-primary_text">
@@ -217,7 +217,7 @@
                                     $text = ($row['ReturnDates'] != NULL) ? "Returned" : "Checked Out";
                                     $class = ($text == "Returned") ? " text-lightgreen " : " text-red-600 ";
 
-                                    echo '<tr class="odd:bg-darkgray even:bg-shadow border-b border-gray-700"><th scope="row" class="px-5 py-4 font-medium text-primary_text ">' .$row['BookID'].'</th><td class="px-5 py-4 font-bold">'.$row['Title'].'</td><td class="px-5 py-4 text-primary_text">' .$row['Author'].'</td><td class="px-5 py-4 text-secondary_text">'.$row['ISBN'].'</td><td class="px-5 py-1 text-secondary_text"><div class=" flex flex-row gap-2"><a href="book.php?deleteid=' .$row['BookID'].'" class=" py-1 px-3 text-primary_text bg-red-600 rounded-md hover:cursor:pointer">Delete</a></div></td></tr>';
+                                    echo '<tr class="odd:bg-darkgray even:bg-shadow border-b border-gray-700"><th scope="row" class="px-5 py-4 font-medium text-primary_text ">' .$row['BookID'].'</th><td class="px-5 py-4 font-bold">'.$row['Title'].'</td><td class="px-5 py-4 text-primary_text">' .$row['Author'].'</td><td class="px-5 py-4 text-secondary_text">'.$row['ISBN'].'</td><td class="px-5 py-1 text-secondary_text"><div class=" flex flex-row gap-2"><a class=" py-1 px-3 text-primary_text bg-lightgreen rounded-md hover:cursor:pointer" href="" onclick="showEditModal(event, '.$row['BookID'].', \''.$row['Title'].'\', \''.$row['Author'].'\', \''.$row['ISBN'].'\')">Edit</a><a href="book.php?deleteid=' .$row['BookID'].'" class=" py-1 px-3 text-primary_text bg-red-600 rounded-md hover:cursor:pointer">Delete</a></div></td></tr>';
                                 }
                             } else {
                                 echo '<tr><td colspan="5" class="px-5 py-4 text-secondary_text">No results found.</td></tr>';
@@ -268,12 +268,27 @@
             ?>
         </nav>
     </main>
+
     <!-- To delete a certain book -->
     <?php 
-        include('config/db.php');
         if (isset($_GET['deleteid'])) {
             $id = $_GET['deleteid'];
             $delete = mysqli_query($conn, "DELETE FROM `book` WHERE `BookID` = '$id'");
+            if ($delete) {
+                ?>
+                    <script type="text/javascript">
+                        alert("Book deleted successfully!");
+                        window.location.href = "book.php";
+                    </script>;
+                <?php
+            } else {
+                ?>
+                    <script type="text/javascript">
+                        alert("Error deleting book: ' . mysqli_error($conn) . '");
+                        window.location.href = "book.php";
+                    </script>;
+                <?php
+            }
         }
     ?>
 
@@ -299,27 +314,41 @@
                         <span class="sr-only">Close modal</span>
                     </button>
                 </div>
+                <!-- Modal body -->
+                <form class="p-4 md:p-5" method="post" action="../Utils/insert.php">
+                    <div class="grid gap-4 mb-4 grid-cols-2">
+                        <div class="col-span-2">
+                            <label for="title" class="block mb-2 text-sm font-medium text-primary_text">Title</label>
+                            <input type="text" autocomplete="off" name="title" id="title" class=" border text-secondary_text text-sm rounded-lg block w-full p-2.5 bg-gray-600 border-gray-500 placeholder-gray-400 focus:ring-primary-500 focus:border-primary-500" placeholder="Type book title" required="">
+                        </div>
+                        <div class="col-span-2">
+                            <label for="author" class="block mb-2 text-sm font-medium text-primary_text">Author</label>
+                            <input type="text" autocomplete="off" name="author" id="author" class=" border text-secondary_text text-sm rounded-lg block w-full p-2.5 bg-gray-600 border-gray-500 placeholder-gray-400 focus:ring-primary-500 focus:border-primary-500" placeholder="John Doe" required="">
+                        </div>
+                        <div class="col-span-2">
+                            <label for="isbn" class="block mb-2 text-sm font-medium text-primary_text">ISBN</label>
+                            <input type="text" autocomplete="off" name="isbn" id="isbn" class=" border text-secondary_text text-sm rounded-lg block w-full p-2.5 bg-gray-600 border-gray-500 placeholder-gray-400 focus:ring-primary-500 focus:border-primary-500" placeholder="000000000-0" required="">
+                        </div>
+                    </div>
+                    <button type="submit" name="submit-book" class="text-white inline-flex items-center focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center bg-blue-600 hover:bg-blue-700 focus:ring-blue-800">
+                        <svg class="me-1 -ms-1 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd"></path></svg>
+                        Submit book
+                    </button>
+                </form>
             </div>
         </div>
     </div>
-    <!-- to Add Book -->
+    
+    <!-- Add Validation -->
     <?php
-        include('config/db.php');
-        if (isset($_POST['submit-book'])) {
-            // Get form data
-            $title = $_POST['title'];
-            $author = $_POST['author'];
-            $isbn = $_POST['isbn'];
-
-            $setQuery = "INSERT INTO `book` (`BookID`, `Title`, `Author`, `ISBN`) VALUES (NULL, '$title', '$author', '$isbn');";
-            if (mysqli_query($conn, $setQuery)) {
-                echo '<script>alert("Book added successfully!");</script>';
-            } else {
-                echo '<script>alert("Error: ' . $setQuery . '<br>' . mysqli_error($conn) . '");</script>';
-            }
+        if (isset($_GET['error'])) {
+            $error = $_GET['error'];
+            echo '<script>alert("' . $error . '");window.location.href = "book.php";</script>';
+        } elseif (isset($_GET['success'])) {
+            $success = $_GET['success'];
+            echo '<script>alert("' . $success . '");window.location.href = "book.php";</script>';
         }
     ?>
-
 
     <!-- Script to show editing form -->
     <script>
@@ -343,7 +372,7 @@
 <!-- get data -->
 <?php 
     function getTableData($sql) {
-        include('config/db.php');
+        include('../../config/db.php');
         $result = mysqli_query($conn, $sql);
         if (mysqli_num_rows($result) > 0) {
             while ($row = mysqli_fetch_array($result) ) {

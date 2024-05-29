@@ -4,10 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Library Management</title>
-    <link rel="icon" type="image/x-icon" href="./assets/img/logo.png">
+    <link rel="icon" type="image/x-icon" href="../../assets/img/logo.png">
 
     <!-- js -->
-    <script src="./assets/script/script.js"></script>
+    <script src="../../assets/script/script.js"></script>
 
     <!-- css -->
     <style>
@@ -45,20 +45,20 @@
         }
     </script>
 </head>
-<body class=" bg-background">
+<body class=" bg-background prevent-select">
     
     <header class=" bg-card shadow-lg shadow-shadow">
         <div class="flex items-center w-full px-6 py-2 justify-between ">
             <div class=" flex flex-row max-sm:flex-row-reverse m-0 max-sm:w-full max-sm:justify-end">
                 <div class=" flex justify-center w-full">
-                    <img src="./assets/img/logo.png" alt="tailwind-logo" class="h-10 w-10">
+                    <img src="../../assets/img/logo.png" alt="tailwind-logo" class="h-10 w-10">
                 </div>
                 <div class=" flex items-center max-sm:flex-col-reverse max-sm:items-start">
                     <ul id="navigation" class=" flex flex-row gap-6 px-8 text-gray-400 font-medium max-sm:hidden max-sm:flex-col max-sm:px-4 max-sm:absolute max-sm:top-14 max-sm:bg-slate-800 max-sm:w-full max-sm:left-0 max-sm:gap-1 max-sm:pb-3 max-sm:rounded-b-lg">
-                        <a class="py-2 px-3 rounded-md hover:bg-hover hover:text-primary_text" href="index.php"><li>Report</li></a>
-                        <a class="py-2 px-3 rounded-md hover:bg-hover hover:text-primary_text" href="book.php"><li>Books</li></a>
-                        <a class="py-2 px-3 bg-primary_blue rounded-md text-primary_text" href="member.php"><li>Members</li></a>
-                        <a class="py-2 px-3 rounded-md hover:bg-hover hover:text-primary_text" href="checkout.php"><li>Checkout</li></a>
+                        <a class="py-2 px-3 rounded-md hover:bg-hover hover:text-primary_text" href="./index.php"><li>Report</li></a>
+                        <a class="py-2 px-3 rounded-md hover:bg-hover hover:text-primary_text" href="./book.php"><li>Books</li></a>
+                        <a class="py-2 px-3 bg-primary_blue rounded-md text-primary_text" href="./member.php"><li>Members</li></a>
+                        <a class="py-2 px-3 rounded-md hover:bg-hover hover:text-primary_text" href="./checkout.php"><li>Checkout</li></a>
                     </ul>
                     <div class=" max-sm:text-gray-400 max-sm:transition-all ">
                         <button onclick="activate()" class=" max-sm:p-2 max-sm:rounded-md max-sm:hover:bg-slate-700 max-sm:hover:text-gray-100 max-sm:cursor-pointer max-sm:active:ring-offset-1 max-sm:active:ring-1 max-sm:active:ring-gray-200">
@@ -76,21 +76,21 @@
                 <h4 class=" font-medium text-gray-400 group-hover:text-gray-100 group-hover:cursor:pointer">John Paul Monter</h4>
                 <button id="toggle" onclick="buttonToggle()" type="button" class="h-10 w-10 rounded-full cursor-pointer active:ring-offset-1 active:ring-1 active:ring-gray-200 group-hover:bg-hover">
                     <a href="https://github.com/D3struf" target="_blank" rel="noopener noreferrer">
-                        <img class="h-10 w-10 rounded-full p-1" src="./assets/img/icons8-github-64.png" alt="github-profile">
+                        <img class="h-10 w-10 rounded-full p-1" src="../../assets/img/icons8-github-64.png" alt="github-profile">
                     </a>
                 </button>
             </div></div>
         </div>
     </header>
     
-    <?php include('config/db.php'); ?>
+    <?php include('../../config/db.php'); ?>
     <main class=" mx-10 my-3">
         <h1 class=" text-primary_text font-bold text-2xl">Members</h1>
 
         <!-- Edit Row Modal -->
-        <div id="edit" class=" hidden h-16 w-full mt-3 bg-card">
+        <div id="edit" class=" hidden h-16 w-full mt-3 bg-card rounded-md">
             <!-- Modal body -->
-            <form class=" p-4 md:p-3 flex flex-row justify-between" method="post" action="update.php">
+            <form class=" p-4 md:p-3 flex flex-row justify-between" method="post" action="../Utils/update.php">
                 <input type="hidden" name="memberID" id="memberID">
                 <div class=" flex flex-row gap-10">
                     <div class="row-span-2 sm:row-span-1">
@@ -112,7 +112,7 @@
                     </div>
                 </div>
                 <button type="submit" name="submit-edit-member" onclick="hideEditModal()"
-                    class=" text-white inline-flex items-center bg-blue-700 focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center bg-blue-600 hover:bg-blue-700 focus:ring-blue-800">
+                    class=" text-white inline-flex items-center bg-blue-700 focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center  hover:bg-blue-700 focus:ring-blue-800">
                     <svg class="me-1 -ms-1 w-5 h-5" fill="currentColor" viewBox="0 0 20 20"
                         xmlns="http://www.w3.org/2000/svg">
                         <path fill-rule="evenodd"
@@ -137,7 +137,7 @@
                 </button>
                 <button data-modal-target="crud-modal" data-modal-toggle="crud-modal" type="button" class=" h-10 w-10 mt-5 ml-auto flex flex-row gap-2 items-center rounded-full group hover:cursor:pointer">
                     <h2 class=" text-secondary_text font-semibold text-lg -ml-10 group-hover:text-primary_text hover:cursor:pointer">Add</h2>
-                    <img class="hover:cursor:pointer" src="./assets/img/icons8-add-50.png" alt="add-book">
+                    <img class="hover:cursor:pointer" src="../../assets/img/icons8-add-50.png" alt="add-book">
                 </button>
             </form>
             <!-- Show Members -->
@@ -185,7 +185,7 @@
                             $current_page = $page_number;
                             if (mysqli_num_rows($result) > 0) {
                                 while ($row = mysqli_fetch_array($result) ) {
-                                    echo '<tr class="odd:bg-darkgray even:bg-shadow border-b border-gray-700"><th scope="row" class="px-5 py-4 font-medium text-primary_text whitespace-nowrap">' .$row['MemberID'].'</th><td class="px-5 py-4 font-bold text-primary_text">' .$row['LastName'].'</td><td class="px-5 py-4 text-secondary_text">'.$row['FirstName'].'</td><td class="px-5 py-4 text-secondary_text">'.$row['MembershipType'].'</td><td class="px-5 py-1 text-primary_text"><div class=" flex flex-row gap-2"><a href="member.php?deleteid=' .$row['MemberID'].'" class=" py-1 px-3 text-primary_text bg-red-600 rounded-md hover:cursor:pointer">Delete</a></div></td></tr>';
+                                    echo '<tr class="odd:bg-darkgray even:bg-shadow border-b border-gray-700"><th scope="row" class="px-5 py-4 font-medium text-primary_text whitespace-nowrap">' .$row['MemberID'].'</th><td class="px-5 py-4 font-bold text-primary_text">' .$row['LastName'].'</td><td class="px-5 py-4 text-secondary_text">'.$row['FirstName'].'</td><td class="px-5 py-4 text-secondary_text">'.$row['MembershipType'].'</td><td class="px-5 py-1 text-primary_text"><div class=" flex flex-row gap-2"><a class=" py-1 px-3 text-primary_text bg-lightgreen rounded-md hover:cursor:pointer" href="" onclick="showEditModal(event, '.$row['MemberID'].', \''.$row['FirstName'].'\', \''.$row['LastName'].'\', \''.$row['MembershipType'].'\')">Edit</a><a href="member.php?deleteid=' .$row['MemberID'].'" class=" py-1 px-3 text-primary_text bg-red-600 rounded-md hover:cursor:pointer">Delete</a></div></td></tr>';
                                 }
                             } else {
                                 echo '<tr><td colspan="5" class="px-5 py-4 text-secondary_text">No results found.</td></tr>';
@@ -236,10 +236,25 @@
     </main>
     <!-- To delete a certain book -->
     <?php 
-        include('config/db.php');
+        include('../../config/db.php');
         if (isset($_GET['deleteid'])) {
             $id = $_GET['deleteid'];
             $delete = mysqli_query($conn, "DELETE FROM `librarymember` WHERE `MemberID` = '$id'");
+            if ($delete) {
+                ?>
+                    <script type="text/javascript">
+                        alert("Member deleted successfully!");
+                        window.location.href = "member.php";
+                    </script>;
+                <?php
+            } else {
+                ?>
+                    <script type="text/javascript">
+                        alert("Error deleting member: ' . mysqli_error($conn) . '");
+                        window.location.href = "member.php";
+                    </script>;
+                <?php
+            }
         }
     ?>
 
@@ -261,12 +276,12 @@
                     </button>
                 </div>
                 <!-- Modal body -->
-                <form class="p-4 md:p-5" method="post">
+                <form class="p-4 md:p-5" method="post" action="../Utils/insert.php">
                     <div class="grid gap-4 mb-4 grid-cols-2">
                         <div class="col-span-2 sm:col-span-1">
                             <label for="title" class="block mb-2 text-sm font-medium text-primary_text">First Name</label>
                             <input type="text" autocomplete="off" name="first-name" id="title" class=" border text-secondary_text text-sm rounded-lg block w-full p-2.5 bg-gray-600 border-gray-500 placeholder-gray-400 focus:ring-primary-500 focus:border-primary-500" placeholder="John" required="">
-                        </div>
+                        </div>  
                         <div class="col-span-2 sm:col-span-1">
                             <label for="author" class="block mb-2 text-sm font-medium text-primary_text">Last Name</label>
                             <input type="text" autocomplete="off" name="last-name" id="author" class=" border text-secondary_text text-sm rounded-lg block w-full p-2.5 bg-gray-600 border-gray-500 placeholder-gray-400 focus:ring-primary-500 focus:border-primary-500" placeholder="Doe" required="">
@@ -281,7 +296,7 @@
                             </select>
                         </div>
                     </div>
-                    <button type="submit" name="submit-member" class="text-white inline-flex items-center bg-blue-700 focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center bg-blue-600 hover:bg-blue-700 focus:ring-blue-800">
+                    <button type="submit" name="submit-member" class="text-white inline-flex items-center bg-blue-700 focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center hover:bg-blue-700 focus:ring-blue-800">
                         <svg class="me-1 -ms-1 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd"></path></svg>
                         Submit membership
                     </button>
@@ -289,23 +304,15 @@
             </div>
         </div>
     </div>
-    <!-- to add book -->
+    
+    <!-- Add Validation -->
     <?php
-        include('config/db.php');
-        if (isset($_POST['submit-member'])) {
-            // Get form data
-            $firstName = $_POST['first-name'];
-            $lastName = $_POST['last-name'];
-            $membershipType = $_POST['membership-type'];
-            print($firstName);
-            print($lastName);
-            print($membershipType);
-            $setQuery = "INSERT INTO `librarymember` (`MemberID`, `FirstName`, `LastName`, `MembershipType`) VALUES (NULL, '$firstName', '$lastName', '$membershipType');";
-            if (mysqli_query($conn, $setQuery)) {
-                echo '<script>alert("Membership added successfully!");</script>';
-            } else {
-                echo '<script>alert("Error: ' . $setQuery . '<br>' . mysqli_error($conn) . '");</script>';
-            }
+        if (isset($_GET['error'])) {
+            $error = $_GET['error'];
+            echo '<script>alert("' . $error . '");window.location.href = "member.php";</script>';
+        } elseif (isset($_GET['success'])) {
+            $success = $_GET['success'];
+            echo '<script>alert("' . $success . '");window.location.href = "member.php";</script>';
         }
     ?>
 
@@ -330,7 +337,7 @@
 <!-- get data -->
 <?php 
     function getTableData($sql) {
-        include('config/db.php');
+        include('../../config/db.php');
         $result = mysqli_query($conn, $sql);
         if (mysqli_num_rows($result) > 0) {
             while ($row = mysqli_fetch_array($result) ) {

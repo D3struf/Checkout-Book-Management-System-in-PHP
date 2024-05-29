@@ -4,10 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Library Management</title>
-    <link rel="icon" type="image/x-icon" href="./assets/img/logo.png">
+    <link rel="icon" type="image/x-icon" href="../../assets/img/logo.png">
 
     <!-- js -->
-    <script src="./assets/script/script.js"></script>
+    <script src="../../assets/script/script.js"></script>
 
     <!-- css -->
     <style>
@@ -52,14 +52,14 @@
         <div class="flex items-center w-full px-6 py-2 justify-between ">
             <div class=" flex flex-row max-sm:flex-row-reverse m-0 max-sm:w-full max-sm:justify-end">
                 <div class=" flex justify-center w-full">
-                    <img src="./assets/img/logo.png" alt="tailwind-logo" class="h-10 w-10">
+                    <img src="../../assets/img/logo.png" alt="tailwind-logo" class="h-10 w-10">
                 </div>
                 <div class=" flex items-center max-sm:flex-col-reverse max-sm:items-start">
                     <ul id="navigation" class=" flex flex-row gap-6 px-8 text-gray-400 font-medium max-sm:hidden max-sm:flex-col max-sm:px-4 max-sm:absolute max-sm:top-14 max-sm:bg-slate-800 max-sm:w-full max-sm:left-0 max-sm:gap-1 max-sm:pb-3 max-sm:rounded-b-lg">
-                        <a class="py-2 px-3 bg-primary_blue rounded-md text-primary_text" href="index.php"><li>Report</li></a>
-                        <a class="py-2 px-3 rounded-md hover:bg-hover hover:text-primary_text" href="book.php"><li>Books</li></a>
-                        <a class="py-2 px-3 rounded-md hover:bg-hover hover:text-primary_text" href="member.php"><li>Members</li></a>
-                        <a class="py-2 px-3 rounded-md hover:bg-hover hover:text-primary_text" href="checkout.php"><li>Checkout</li></a>
+                        <a class="py-2 px-3 bg-primary_blue rounded-md text-primary_text" href="./index.php"><li>Report</li></a>
+                        <a class="py-2 px-3 rounded-md hover:bg-hover hover:text-primary_text" href="./book.php"><li>Books</li></a>
+                        <a class="py-2 px-3 rounded-md hover:bg-hover hover:text-primary_text" href="./member.php"><li>Members</li></a>
+                        <a class="py-2 px-3 rounded-md hover:bg-hover hover:text-primary_text" href="./checkout.php"><li>Checkout</li></a>
                     </ul>
                     <div class=" max-sm:text-gray-400 max-sm:transition-all ">
                         <button onclick="activate()" class=" max-sm:p-2 max-sm:rounded-md max-sm:hover:bg-slate-700 max-sm:hover:text-gray-100 max-sm:cursor-pointer max-sm:active:ring-offset-1 max-sm:active:ring-1 max-sm:active:ring-gray-200">
@@ -77,14 +77,14 @@
                 <h4 class=" font-medium text-gray-400 group-hover:text-gray-100 group-hover:cursor:pointer">John Paul Monter</h4>
                 <button id="toggle" onclick="buttonToggle()" type="button" class="h-10 w-10 rounded-full cursor-pointer active:ring-offset-1 active:ring-1 active:ring-gray-200 group-hover:bg-hover">
                     <a href="https://github.com/D3struf" target="_blank" rel="noopener noreferrer">
-                        <img class="h-10 w-10 rounded-full p-1" src="./assets/img/icons8-github-64.png" alt="github-profile">
+                        <img class="h-10 w-10 rounded-full p-1" src="../../assets/img/icons8-github-64.png" alt="github-profile">
                     </a>
                 </button>
             </div>
         </div>
     </header>
 
-    <?php include('config/db.php'); ?>
+    <?php include('../../config/db.php'); ?>
     <main class=" mx-10 my-5">
         <h1 class=" text-primary_text text-lg font-bold">Reports</h1>
         <div class="flex flex-row gap-4">
@@ -105,7 +105,7 @@
                             // Display
                             ?>
                             <div class=" h-32 w-48 p-2 bg-card shadow-lg shadow-shadow rounded-md flex flex-row items-center gap-1 hover:scale-105 hover:cursor:pointer">
-                                <img class=" h-[50px] w-[50px]" src="./assets/img/totalbooks.png" alt="total books">
+                                <img class=" h-[50px] w-[50px]" src="../../assets/img/totalbooks.png" alt="total books">
                                 <div class=" flex flex-col">
                                     <h1 class=" font-medium text-secondary_text text-sm">Total Books</h1>
                                     <span class=" text-primary_text text-4xl font-bold "><?php echo $rowcount?></span>
@@ -127,7 +127,7 @@
                             // Display
                             ?>
                             <div class=" h-32 w-48 p-2 bg-card shadow-lg shadow-shadow rounded-md flex flex-row items-center gap-1 hover:scale-105 hover:cursor:pointer">
-                                <img class=" h-[50px] w-[50px]" src="./assets/img/totalmembers.png" alt="total books">
+                                <img class=" h-[50px] w-[50px]" src="../../assets/img/totalmembers.png" alt="total books">
                                 <div class=" flex flex-col">
                                     <h1 class=" font-medium text-secondary_text text-sm">Total Members</h1>
                                     <span class=" text-primary_text text-4xl font-bold "><?php echo $rowcount?></span>
@@ -174,7 +174,7 @@
                         while($row = mysqli_fetch_assoc($result)) {
                             ?>
                             <div class=" my-2 px-4 py-2 bg-blue-900 rounded-md flex flex-row gap-6 items-center text-ellipsis hover:scale-105 hover:cursor:pointer">
-                                <img src="./assets/img/book-icon.png" alt="book-icon" class="h-8 w-8">
+                                <img src="../../assets/img/book-icon.png" alt="book-icon" class="h-8 w-8">
                                 <h2 class=" text-primary_text text-base font-bold "><?php echo $row['Title']?> by <?php echo $row['Author']?></h2>
                             </div>
                             <?php
@@ -270,7 +270,7 @@
 <!-- get data -->
 <?php 
     function getTableData($sql) {
-        include('config/db.php');
+        include('../../config/db.php');
         $limit = 7;
         $result = mysqli_query($conn, $sql);
         if (mysqli_num_rows($result) > 0) {

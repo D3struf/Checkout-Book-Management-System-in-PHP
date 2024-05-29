@@ -1,6 +1,6 @@
 <?php
 // Include your database connection file
-include 'config/db.php';
+include '../../config/db.php';
 
 if (isset($_POST['submit-edit-book'])) {
     // Get the form data
@@ -20,7 +20,7 @@ if (isset($_POST['submit-edit-book'])) {
 
     // Execute the query
     if (mysqli_query($conn, $sql)) {
-        header('Location: book.php');
+        header('Location: ../Admin/book.php');
         exit();
     } else {
         echo "Error updating record: " . mysqli_error($conn);
@@ -48,7 +48,7 @@ if (isset($_POST['submit-edit-member'])) {
 
     // Execute the query
     if (mysqli_query($conn, $sql)) {
-        header('Location: member.php');
+        header('Location: ../Admin/member.php');
         exit();
     } else {
         echo "Error updating record: " . mysqli_error($conn);
@@ -72,7 +72,7 @@ if (isset($_POST['submit-edit-checkout'])) {
 
     // Execute the query
     if (mysqli_query($conn, $sql)) {
-        header('Location: checkout.php');
+        header('Location: ../Admin/checkout.php');
         exit();
     } else {
         echo "Error updating record: " . mysqli_error($conn);
