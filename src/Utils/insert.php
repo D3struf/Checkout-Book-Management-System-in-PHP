@@ -18,14 +18,24 @@
             header('Location: ../Admin/member.php?error=Member already exists');
             exit();
         } else {
-            // Insert new member
-            $setQuery = "INSERT INTO `librarymember` (`MemberID`, `FirstName`, `LastName`, `MembershipType`) VALUES (NULL, '$firstName', '$lastName', '$membershipType');";
-            if (mysqli_query($conn, $setQuery)) {
-                header('Location: ../Admin/member.php?success=Membership added successfully');
-                exit();
-            } else {
-                header('Location: ../Admin/member.php?error=' . urlencode('Error: ' . mysqli_error($conn)));
-                exit();
+            // Insert new account first
+            // Defaults Account
+            $AccountQuery = "INSERT INTO `account` (`AccountID`, `EmailAddress`, `Password`, `AccountType`) VALUES (NULL, '123@gmail.com', '12345', 'student');";
+
+            if(mysqli_query($conn, $AccountQuery)) {
+                print('Successfully Added Account');
+                // Get the last inserted AccountID
+                $lastAccountId = mysqli_insert_id($conn);
+
+                // Insert new member
+                $setQuery = "INSERT INTO `librarymember` (`MemberID`, `FirstName`, `LastName`, `MembershipType`, `AccountID`, `ProfileImage`) VALUES (NULL, '$firstName', '$lastName', '$membershipType', '$lastAccountId', NULL);";
+                if (mysqli_query($conn, $setQuery)) {
+                    header('Location: ../Admin/member.php?success=Membership added successfully');
+                    exit();
+                } else {
+                    header('Location: ../Admin/member.php?error=' . urlencode('Error: ' . mysqli_error($conn)));
+                    exit();
+                }
             }
         }
     }
@@ -35,6 +45,27 @@
         $title = $_POST['title'];
         $author = $_POST['author'];
         $isbn = $_POST['isbn'];
+
+        $imgContent = NULL;
+        if(!empty($_FILES["file-upload"]["name"])){
+            // Get the image info
+            $fileName = basename($_FILES["file-upload"]["name"]);
+            $fileType = pathinfo($fileName, PATHINFO_EXTENSION);
+
+            // Allow certain file formats
+            $allowTypes = array('jpg','png','jpeg','gif');
+            if(in_array($fileType, $allowTypes)){
+                $image = $_FILES['file-upload']['tmp_name'];
+                $imgContent = addslashes(file_get_contents($image));
+            } else {
+                header('Location: ../Admin/book.php?error=Sorry, only JPG, JPEG, PNG and GIF images are supported.');
+                exit();
+            }
+        } else {
+            header('Location: ../Admin/book.php?error=' . urlencode('Error: ' . mysqli_error($conn)));
+            exit();
+        }
+
         $checkQuery = "SELECT * FROM `book` WHERE `Title` = '$title' AND `Author` = '$author'";
         $result = mysqli_query($conn, $checkQuery);
 
@@ -43,15 +74,12 @@
             header('Location: ../Admin/book.php?error=Book already exists');
             exit();
         } else {
-            $setQuery = "INSERT INTO `book` (`BookID`, `Title`, `Author`, `ISBN`) VALUES (NULL, '$title', '$author', '$isbn');";
+            $setQuery = "INSERT INTO `book` (`BookID`, `Title`, `Author`, `ISBN`, `CoverImage`) VALUES (NULL, '$title', '$author', '$isbn', '$imgContent');";
             if (mysqli_query($conn, $setQuery)) {
                 echo '<script>alert("Book added successfully!");</script>';
                 header('Location: ../Admin/book.php?success=Book added successfully');
                 exit();
-            } else {
-                header('Location: ../Admin/book.php?error=' . urlencode('Error: ' . mysqli_error($conn)));
-                exit();
-            }
+            } 
         }
 
     }
@@ -69,10 +97,11 @@
         VALUES (NULL, '$checkoutBook', '$checkoutMember', '$currentDateTime', NULL);";
         if (mysqli_query($conn, $setQuery)) {
             echo '<script>alert("Checkout successfully!");</script>';
-            header('Location: ../Admin/checkout.php');
+            header('Location: ../Admin/checkout.php?success=Checkout added successfully!');
             exit();
         } else {
-            echo '<script>alert("Error: ' . $setQuery . '<br>' . mysqli_error($conn) . '");</script>';
+            header('Location: ../Admin/checkout.php?error=Error: ' . $setQuery . '' . mysqli_error($conn) . '');
+            exit();
         }
     }
 ?>
