@@ -37,13 +37,13 @@
                 // Get the last inserted AccountID
                 $lastAccountId = mysqli_insert_id($conn);
                 print('Last Account'.$lastAccountId);
-                $_SESSION['user_id'] = $lastAccountId;
-                print('Last Account'.$_SESSION['user_id']);
+                $_SESSION['email'] = $lastAccountId;
+                print('Last Account'.$_SESSION['email']);
                 
                 $checkFullName = "SELECT * FROM `librarymember`
                 WHERE `FirstName` = '$firstName' AND `LastName` = '$lastName';";
-
-                if(mysqli_query($conn, $checkFullName)) {
+                $result = mysqli_query($conn, $checkFullName);
+                if(mysqli_num_rows($result) != 0) {
                     print('Member already exists');
                     header('Location:../sign-in.php?error=Member already exists');
                     exit();
@@ -52,14 +52,14 @@
                     $MemberQuery = "INSERT INTO `librarymember` (`MemberID`, `FirstName`, `LastName`, `MembershipType`, `AccountID`, `ProfileImage`) VALUES (NULL, '$firstName', '$lastName', '$membershipType', '$lastAccountId', NULL)";
                     if (mysqli_query($conn, $MemberQuery)) {
                         print('Successfully Added Member');
-                        $_SESSION['user_id'] = $email;
-                        if ($row['AccountType'] == 'student') {
+                        $_SESSION['email'] = $email;
+                        if ($accountType == 'student') {
                             header("Location: ../Client/dashboard.php");
                             exit();
-                        } else {
+                        } else if ($accountType == 'librarian') {
                             print('Librarian');
-                            // header("Location: ../Admin/index.php");
-                            // exit();
+                            header("Location: ../Librarian/dashboard.php");
+                            exit();
                         }
                     } else {
                         header('Location: ../sign-in.php?error=' . urlencode('Error: ' . mysqli_error($conn)));
@@ -91,23 +91,21 @@
             $row = mysqli_fetch_assoc($result);
             if ($row['Password'] == $pass) {
                 print('Successfully Logged In');
-                $_SESSION['user_id'] = $email;
+                $_SESSION['email'] = $email;
 
                 if ($row['AccountType'] == 'student') {
                     header("Location: ../Client/dashboard.php");
                     exit();
                 } else {
                     print('Librarian');
-                    // header("Location: ../Admin/index.php");
-                    // exit();
+                    header("Location: ../Librarian/dashboard.php");
+                    exit();
                 }
             } else {
                 header("Location: ../sign-in.php?error=Incorrect Password!");
                 exit();
             }
         }
-        // Close the result set
-        mysqli_free_result($result);
     }
 
     // Close the connection
