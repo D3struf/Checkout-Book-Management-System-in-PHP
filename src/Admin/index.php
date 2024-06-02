@@ -3,18 +3,18 @@
     include('../../config/db.php');
 
     // Check if user is logged in
-    if (!isset($_SESSION['user_id'])) {
-        header('Location: sign-in.php'); // Redirect to login page if not logged in
+    if (!isset($_SESSION['email'])) {
+        header('Location: ../sign-in.php'); // Redirect to login page if not logged in
         exit();
     }
 
-    $user_id = $_SESSION['user_id'];
+    $email = $_SESSION['email'];
 
     // Fetch user data
     $query = "SELECT `account`.`EmailAddress`, `account`.`Password`, `account`.`AccountType`, `librarymember`.`FirstName`, `librarymember`.`LastName`, `librarymember`.`MembershipType`, `librarymember`.`ProfileImage`  
     FROM `account` 
     JOIN `librarymember` ON `account`.`AccountID` = `librarymember`.`AccountID` 
-    WHERE `account`.`EmailAddress` = '$user_id'";
+    WHERE `account`.`EmailAddress` = '$email'";
 
     $result = mysqli_query($conn, $query);
 
@@ -374,11 +374,11 @@
         new Chart(barchart, {
             type: 'bar',
             data: {
-                labels: labels,
+                labels: [labels[1], labels[2], labels[3]],
                 datasets: [{
                     axis: 'y',
                     label: '# of Members',
-                    data: data,
+                    data: [data[1], data[2], data[3]],
                     backgroundColor: [
                         'rgba(75, 192, 192, 0.2)',
                         'rgba(54, 162, 235, 0.2)',

@@ -3,7 +3,7 @@ include('../../config/db.php');
 session_start();
 
 if (isset($_POST['admin-btn'])) {
-    $_SESSION['user_id'] = 'admin';
+    $_SESSION['email'] = 'admin@gmail.com';
     $pass = $_POST['admin-password'];
 
     if ($pass == 'admin'){

@@ -2,13 +2,13 @@
 session_start();
 include('../../config/db.php');
 
-$user_id = $_SESSION['user_id'];
+$email = $_SESSION['email'];
 
 // Fetch user data
 $query = "SELECT `account`.`EmailAddress`, `account`.`AccountID`, `account`.`Password`, `account`.`AccountType`, `librarymember`.`FirstName`, `librarymember`.`LastName`, `librarymember`.`MembershipType`, `librarymember`.`ProfileImage`  
 FROM `account` 
 JOIN `librarymember` ON `account`.`AccountID` = `librarymember`.`AccountID` 
-WHERE `account`.`EmailAddress` = '$user_id'";
+WHERE `account`.`EmailAddress` = '$email'";
 
 $result = mysqli_query($conn, $query);
 
@@ -44,22 +44,13 @@ if (isset($_POST['save-personal'])) {
             header('Location: ../account-setting.php?error=Sorry, only JPG, JPEG, PNG and GIF images are supported.');
             exit();
         }
-    } else {
-        header('Location: ../account-setting.php');
-        exit();
-    }
+    } 
 
     // Update Account First
     $accountQuery = "UPDATE account SET EmailAddress='$email' WHERE AccountID='$accountID'";
     mysqli_query($conn, $accountQuery);
-
-    // Update query with ProfileImage
-    $updateQuery = "UPDATE librarymember 
-                    SET FirstName='$firstName', LastName='$lastName', MembershipType='$membershipType', ProfileImage='$imgContent' 
-                    WHERE AccountID='$accountID'";
-    mysqli_query($conn, $updateQuery);
     
-    // Update librarymember table
+    // Construct and print the SQL query
     if ($imgContent) {
         $memberQuery = "UPDATE librarymember 
                         SET FirstName='$firstName', LastName='$lastName', MembershipType='$membershipType', ProfileImage='$imgContent' 
@@ -69,6 +60,7 @@ if (isset($_POST['save-personal'])) {
                         SET FirstName='$firstName', LastName='$lastName', MembershipType='$membershipType' 
                         WHERE AccountID='$accountID'";
     }
+    $_SESSION['email'] = $email;
     mysqli_query($conn, $memberQuery);
 
     // Commit transaction

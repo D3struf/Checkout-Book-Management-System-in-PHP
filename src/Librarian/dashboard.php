@@ -4,7 +4,7 @@
 
     // Check if user is logged in
     if (!isset($_SESSION['email'])) {
-        header('Location: ../sign-in.php'); // Redirect to login page if not logged in
+        header('Location: sign-in.php'); // Redirect to login page if not logged in
         exit();
     }
 
@@ -84,8 +84,18 @@
                 </div>
                 <div class=" flex items-center max-sm:flex-col-reverse max-sm:items-start">
                     <ul id="navigation" class=" flex flex-row gap-6 px-8 text-gray-400 font-medium max-sm:hidden max-sm:flex-col max-sm:px-4 max-sm:absolute max-sm:top-14 max-sm:bg-slate-800 max-sm:w-full max-sm:left-0 max-sm:gap-1 max-sm:pb-3 max-sm:rounded-b-lg">
-                        <a class="py-2 px-3 bg-primary_blue rounded-md text-primary_text" href="./index.php"><li>Dashboard</li></a>
-                        <a class="py-2 px-3 rounded-md hover:bg-hover hover:text-primary_text" href="./client.php"><li>Books</li></a>
+                        <a class="py-2 px-3 bg-primary_blue rounded-md text-primary_text" href="./dashboard.php">
+                            <li>Dashboard</li>
+                        </a>
+                        <a class="py-2 px-3 rounded-md hover:bg-hover hover:text-primary_text" href="../Admin/book.php">
+                            <li>Books</li>
+                        </a>
+                        <a class="py-2 px-3 rounded-md hover:bg-hover hover:text-primary_text" href="../Admin/member.php">
+                            <li>Members</li>
+                        </a>
+                        <a class="py-2 px-3 rounded-md hover:bg-hover hover:text-primary_text" href="../Admin/checkout.php">
+                            <li>Checkout</li>
+                        </a>
                     </ul>
                     <div class=" max-sm:text-gray-400 max-sm:transition-all ">
                         <button onclick="activate()" class=" max-sm:p-2 max-sm:rounded-md max-sm:hover:bg-slate-700 max-sm:hover:text-gray-100 max-sm:cursor-pointer max-sm:active:ring-offset-1 max-sm:active:ring-1 max-sm:active:ring-gray-200">

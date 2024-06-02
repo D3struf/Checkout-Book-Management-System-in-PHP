@@ -1,25 +1,27 @@
 <?php
     session_start();
     include('../../config/db.php');
+    include('../Utils/deletion.php');
 
     // Check if user is logged in
-    if (!isset($_SESSION['user_id'])) {
+    if (!isset($_SESSION['email'])) {
         header('Location: sign-in.php'); // Redirect to login page if not logged in
         exit();
     }
 
-    $user_id = $_SESSION['user_id'];
+    $email = $_SESSION['email'];
 
     // Fetch user data
     $query = "SELECT `account`.`EmailAddress`, `account`.`Password`, `account`.`AccountType`, `librarymember`.`FirstName`, `librarymember`.`LastName`, `librarymember`.`MembershipType`, `librarymember`.`ProfileImage`  
     FROM `account` 
     JOIN `librarymember` ON `account`.`AccountID` = `librarymember`.`AccountID` 
-    WHERE `account`.`EmailAddress` = '$user_id'";
+    WHERE `account`.`EmailAddress` = '$email'";
 
     $result = mysqli_query($conn, $query);
 
     if ($result && mysqli_num_rows($result) == 1) {
         $user = mysqli_fetch_assoc($result);
+        $_SESSION["account_type"] = $user["AccountType"];
     } else {
         echo "User not found.";
         exit();
@@ -83,7 +85,7 @@
                 </div>
                 <div class=" flex items-center max-sm:flex-col-reverse max-sm:items-start">
                     <ul id="navigation" class=" flex flex-row gap-6 px-8 text-gray-400 font-medium max-sm:hidden max-sm:flex-col max-sm:px-4 max-sm:absolute max-sm:top-14 max-sm:bg-slate-800 max-sm:w-full max-sm:left-0 max-sm:gap-1 max-sm:pb-3 max-sm:rounded-b-lg">
-                        <a class="py-2 px-3 rounded-md hover:bg-hover hover:text-primary_text" href="./index.php"><li>Dashboard</li></a>
+                        <a class="py-2 px-3 rounded-md hover:bg-hover hover:text-primary_text" href="<?php if ($user['AccountType'] == 'admin') {echo './index.php';} else {echo '../Librarian/dashboard.php';}?>"><li>Dashboard</li></a>
                         <a class="py-2 px-3 rounded-md hover:bg-hover hover:text-primary_text" href="./book.php"><li>Books</li></a>
                         <a class="py-2 px-3 bg-primary_blue rounded-md text-primary_text" href="./member.php"><li>Members</li></a>
                         <a class="py-2 px-3 rounded-md hover:bg-hover hover:text-primary_text" href="./checkout.php"><li>Checkout</li></a>
@@ -210,9 +212,11 @@
                         <th scope="col" class="px-4 py-3">
                             Membership Type
                         </th>
-                        <th scope="col" class="px-6 py-3">
-                            Action
-                        </th>
+                        <?php
+                            if ($user['AccountType'] == 'admin') {
+                                echo '<th scope="col" class="px-6 py-3">Action</th>';
+                            }
+                        ?>
                     </tr>
                 </thead>
                 <tbody>
@@ -239,7 +243,12 @@
                             $current_page = $page_number;
                             if (mysqli_num_rows($result) > 0) {
                                 while ($row = mysqli_fetch_array($result) ) {
-                                    echo '<tr class="odd:bg-darkgray even:bg-shadow border-b border-gray-700"><th scope="row" class="px-5 py-4 font-medium text-primary_text whitespace-nowrap">' .$row['MemberID'].'</th><td class="px-5 py-4 font-bold text-primary_text">' .$row['LastName'].'</td><td class="px-5 py-4 text-secondary_text">'.$row['FirstName'].'</td><td class="px-5 py-4 text-secondary_text">'.$row['MembershipType'].'</td><td class="px-5 py-1 text-primary_text"><div class=" flex flex-row gap-2"><a class=" py-1 px-3 text-primary_text bg-lightgreen rounded-md hover:cursor:pointer" href="" onclick="showEditModal(event, '.$row['MemberID'].', \''.$row['FirstName'].'\', \''.$row['LastName'].'\', \''.$row['MembershipType'].'\')">Edit</a><a href="member.php?deleteid=' .$row['MemberID'].'" class=" py-1 px-3 text-primary_text bg-red-600 rounded-md hover:cursor:pointer">Delete</a></div></td></tr>';
+                                    echo '<tr class="odd:bg-darkgray even:bg-shadow border-b border-gray-700"><th scope="row" class="px-5 py-4 font-medium text-primary_text whitespace-nowrap">' .$row['MemberID'].'</th><td class="px-5 py-4 font-bold text-primary_text">' .$row['LastName'].'</td><td class="px-5 py-4 text-secondary_text">'.$row['FirstName'].'</td><td class="px-5 py-4 text-secondary_text">'.$row['MembershipType'].'</td>';
+
+                                    if ($user['AccountType'] == 'admin') {
+                                    echo '<td class="px-5 py-1 text-primary_text"><div class=" flex flex-row gap-2"><a class=" py-1 px-3 text-primary_text bg-lightgreen rounded-md hover:cursor:pointer" href="" onclick="showEditModal(event, '.$row['MemberID'].', \''.$row['FirstName'].'\', \''.$row['LastName'].'\', \''.$row['MembershipType'].'\')">Edit</a><a href="member.php?deleteid=' .$row['MemberID'].'" class=" py-1 px-3 text-primary_text bg-red-600 rounded-md hover:cursor:pointer">Delete</a></div></td>';
+                                    }
+                                    echo '</tr>';
                                 }
                             } else {
                                 echo '<tr><td colspan="5" class="px-5 py-4 text-secondary_text">No results found.</td></tr>';
@@ -291,25 +300,7 @@
     <!-- To delete a certain book -->
     <?php 
         include('../../config/db.php');
-        if (isset($_GET['deleteid'])) {
-            $id = $_GET['deleteid'];
-            $delete = mysqli_query($conn, "DELETE FROM `librarymember` WHERE `MemberID` = '$id'");
-            if ($delete) {
-                ?>
-                    <script type="text/javascript">
-                        alert("Member deleted successfully!");
-                        window.location.href = "member.php";
-                    </script>;
-                <?php
-            } else {
-                ?>
-                    <script type="text/javascript">
-                        alert("Error deleting member: ' . mysqli_error($conn) . '");
-                        window.location.href = "member.php";
-                    </script>;
-                <?php
-            }
-        }
+        
     ?>
 
     <!-- Add Modal -->
@@ -359,14 +350,43 @@
         </div>
     </div>
     
-    <!-- Add Validation -->
+    <!-- Admin Validation -->
     <?php
         if (isset($_GET['error'])) {
             $error = $_GET['error'];
-            echo '<script>alert("' . $error . '");window.location.href = "member.php";</script>';
+            echo '<div id="toast-danger" class="absolute right-5 top-24 flex items-center w-full max-w-xs p-4 mb-4 text-gray-500 bg-white rounded-lg shadow dark:text-gray-400 dark:bg-gray-800" role="alert">';
+            echo '<div class="inline-flex items-center justify-center flex-shrink-0 w-8 h-8 text-red-500 bg-red-100 rounded-lg dark:bg-red-800 dark:text-red-200">';
+            echo '<svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">';
+            echo '<path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 11.793a1 1 0 1 1-1.414 1.414L10 11.414l-2.293 2.293a1 1 0 0 1-1.414-1.414L8.586 10 6.293 7.707a1 1 0 0 1 1.414-1.414L10 8.586l2.293-2.293a1 1 0 0 1 1.414 1.414L11.414 10l2.293 2.293Z"/>';
+            echo '</svg>';
+            echo '<span class="sr-only">Error icon</span>';
+            echo '</div>';
+            echo '<div class="ms-3 text-sm font-normal">' . $error . '</div>';
+            echo '<button type="button" class="ms-auto -mx-1.5 -my-1.5 bg-white text-gray-400 hover:text-gray-900 rounded-lg focus:ring-2 focus:ring-gray-300 p-1.5 hover:bg-gray-100 inline-flex items-center justify-center h-8 w-8 dark:text-gray-500 dark:hover:text-white dark:bg-gray-800 dark:hover:bg-gray-700" data-dismiss-target="#toast-danger" aria-label="Close">';
+            echo '<span class="sr-only">Close</span>';
+            echo '<svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">';
+            echo '<path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>';
+            echo '</svg>';
+            echo '</button>';
+            echo '</div>';
         } elseif (isset($_GET['success'])) {
             $success = $_GET['success'];
-            echo '<script>alert("' . $success . '");window.location.href = "member.php";</script>';
+            
+            echo '<div id="toast-success" class="absolute right-5 top-24 flex items-center w-full max-w-xs p-4 mb-4 text-gray-500 bg-white rounded-lg shadow dark:text-gray-400 dark:bg-gray-800" role="alert">';
+            echo '<div class="inline-flex items-center justify-center flex-shrink-0 w-8 h-8 text-green-500 bg-green-100 rounded-lg dark:bg-green-800 dark:text-green-200">';
+            echo '<svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">';
+            echo '<path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 8.207-4 4a1 1 0 0 1-1.414 0l-2-2a1 1 0 0 1 1.414-1.414L9 10.586l3.293-3.293a1 1 0 0 1 1.414 1.414Z"/>';
+            echo '</svg>';
+            echo '<span class="sr-only">Check icon</span>';
+            echo '</div>';
+            echo '<div class="ms-3 text-sm font-normal">' . $success . '</div>';
+            echo '<button type="button" class="ms-auto -mx-1.5 -my-1.5 bg-white text-gray-400 hover:text-gray-900 rounded-lg focus:ring-2 focus:ring-gray-300 p-1.5 hover:bg-gray-100 inline-flex items-center justify-center h-8 w-8 dark:text-gray-500 dark:hover:text-white dark:bg-gray-800 dark:hover:bg-gray-700" data-dismiss-target="#toast-success" aria-label="Close">';
+            echo '<span class="sr-only">Close</span>';
+            echo '<svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">';
+            echo '<path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>';
+            echo '</svg>';
+            echo '</button>';
+            echo '</div>';
         }
     ?>
 
@@ -380,7 +400,8 @@
             if (membershipType != '') {
                 document.getElementById('edit-membership-type').value = membershipType;
             } else {
-                document.getElementById('edit-membership-type').attributes. ='student';
+                document.getElementById('edit-membership-type').disabled = true;
+                document.getElementById('edit-membership-type').value = "Librarian";
             }
             document.getElementById('edit').classList.remove('hidden');
         }
@@ -399,7 +420,12 @@
         $result = mysqli_query($conn, $sql);
         if (mysqli_num_rows($result) > 0) {
             while ($row = mysqli_fetch_array($result) ) {
-                echo '<tr class="odd:bg-darkgray even:bg-shadow border-b border-gray-700"><th scope="row" class="px-5 py-4 font-medium text-primary_text ">' .$row['MemberID'].'</th><td class="px-5 py-4 font-bold">'.$row['LastName'].'</td><td class="px-5 py-4 text-secondary_text">' .$row['FirstName'].'</td><td class="px-5 py-4 text-secondary_text">'.$row['MembershipType'].'</td><td class="px-5 py-1 text-secondary_text"><div class=" flex flex-row gap-2"><a class=" py-1 px-3 text-primary_text bg-lightgreen rounded-md hover:cursor:pointer" href="" onclick="showEditModal(event, '.$row['MemberID'].', \''.$row['FirstName'].'\', \''.$row['LastName'].'\', \''.$row['MembershipType'].'\')">Edit</a><a href="member.php?deleteid=' .$row['MemberID'].'" class=" py-1 px-3 text-primary_text bg-red-600 rounded-md hover:cursor:pointer">Delete</a></div></td></tr>';
+                echo '<tr class="odd:bg-darkgray even:bg-shadow border-b border-gray-700"><th scope="row" class="px-5 py-4 font-medium text-primary_text ">' .$row['MemberID'].'</th><td class="px-5 py-4 font-bold">'.$row['LastName'].'</td><td class="px-5 py-4 text-secondary_text">' .$row['FirstName'].'</td><td class="px-5 py-4 text-secondary_text">'.$row['MembershipType'].'</td>';
+                
+                if ($_SESSION["account_type"] == 'admin') {
+                    echo '<td class="px-5 py-1 text-secondary_text"><div class=" flex flex-row gap-2"><a class=" py-1 px-3 text-primary_text bg-lightgreen rounded-md hover:cursor:pointer" href="" onclick="showEditModal(event, '.$row['MemberID'].', \''.$row['FirstName'].'\', \''.$row['LastName'].'\', \''.$row['MembershipType'].'\')">Edit</a><a href="member.php?deleteidM=' .$row['MemberID'].'" class=" py-1 px-3 text-primary_text bg-red-600 rounded-md hover:cursor:pointer">Delete</a></div></td>';
+                }
+                echo '</tr>';
             }
         }
     }

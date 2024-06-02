@@ -2,13 +2,13 @@
 session_start();
 include('../../config/db.php');
 
-$user_id = $_SESSION['user_id'];
+$email = $_SESSION['email'];
 
 // Fetch user data
 $query = "SELECT `account`.`EmailAddress`, `account`.`AccountID`, `account`.`Password`, `account`.`AccountType`, `librarymember`.`FirstName`, `librarymember`.`LastName`, `librarymember`.`MembershipType`, `librarymember`.`ProfileImage`  
 FROM `account` 
 JOIN `librarymember` ON `account`.`AccountID` = `librarymember`.`AccountID` 
-WHERE `account`.`EmailAddress` = '$user_id'";
+WHERE `account`.`EmailAddress` = '$email'";
 
 $result = mysqli_query($conn, $query);
 

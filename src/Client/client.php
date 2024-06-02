@@ -3,18 +3,18 @@
     include('../../config/db.php');
 
     // Check if user is logged in
-    if (!isset($_SESSION['user_id'])) {
-        header('Location: sign-in.php'); // Redirect to login page if not logged in
+    if (!isset($_SESSION['email'])) {
+        header('Location: ../sign-in.php'); // Redirect to login page if not logged in
         exit();
     }
 
-    $user_id = $_SESSION['user_id'];
+    $email = $_SESSION['email'];
 
     // Fetch user data
     $query = "SELECT `account`.*, `librarymember`.*  
     FROM `account`
     JOIN `librarymember` ON `account`.`AccountID` = `librarymember`.`AccountID`
-    WHERE `account`.`EmailAddress` = '$user_id'";
+    WHERE `account`.`EmailAddress` = '$email'";
 
     $result = mysqli_query($conn, $query);
 
@@ -161,7 +161,13 @@
             ?>
             <div class=" max-h-fit max-w-[280px] bg-card border-2 border-gray-600 p-5 shadow-lg shadow-shadow rounded-lg flex flex-col justify-between">
                 <div class="overflow-hidden rounded-md">
-                    <img src="data:image/jpeg;base64,<?php echo base64_encode($row['CoverImage']); ?>" alt="Cover Image" class=" w-80 mx-auto rounded-md transform transition-transform duration-500 hover:scale-125">
+                    <?php
+                        if ($row['CoverImage'] != NULL) {
+                            echo '<img src="data:image/jpeg;base64,'.base64_encode($row['CoverImage']).'" alt="Cover Image" class=" w-80 mx-auto rounded-md transform transition-transform duration-500 hover:scale-125">';
+                        } else {
+                            echo '<img src="../../assets/img/image-template.jpg" alt="Cover Image" class=" h-80 w-80 mx-auto rounded-md transform transition-transform duration-500 hover:scale-125">';
+                        }
+                    ?>
                 </div>
                 <span class="font-semibold text-green-400 text-sm bg-green-800 flex flex-row gap-2 my-3 py-1 px-2.5 w-fit rounded-md text-center">
                     <svg class="w-5 h-5 text-green-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
@@ -170,6 +176,7 @@
                     <?php echo htmlspecialchars($row['Author']); ?>
                 </span>
                 <h2 class=" font-bold text-primary_text text-xl mb-3"><?php echo htmlspecialchars($row['Title']); ?></h2>
+                
                 <button type="button" class=" mt-auto py-2 px-6 bg-blue-700 hover:bg-blue-900 rounded-lg text-blue-100">Read</button>
             </div>
             <?php
