@@ -229,7 +229,9 @@
                                 $getQuery = "SELECT * FROM librarymember";
                                 $result = mysqli_query($conn, $getQuery);
                                 while ($row = mysqli_fetch_array($result)) {
-                                    echo '<option class="text-primary_text" value="'. $row['MemberID']. '">'. $row['FirstName']. ' '. $row['LastName']. '</option>';
+                                    if ($row['MembershipType'] != '') {
+                                        echo '<option class="text-primary_text" value="'. $row['MemberID']. '">'. $row['FirstName']. ' '. $row['LastName']. '</option>';
+                                    }
                                 }
                             ?>
                         </select>

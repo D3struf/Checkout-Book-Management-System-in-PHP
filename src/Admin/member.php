@@ -377,7 +377,11 @@
             document.getElementById('memberID').value = memberId;
             document.getElementById('edit-last-name').value = lastname;
             document.getElementById('edit-first-name').value = firstname;
-            document.getElementById('edit-membership-type').value = membershipType;
+            if (membershipType != '') {
+                document.getElementById('edit-membership-type').value = membershipType;
+            } else {
+                document.getElementById('edit-membership-type').attributes. ='student';
+            }
             document.getElementById('edit').classList.remove('hidden');
         }
 
