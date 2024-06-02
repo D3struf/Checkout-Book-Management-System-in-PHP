@@ -3,18 +3,18 @@
     include('../config/db.php');
 
     // Check if user is logged in
-    if (!isset($_SESSION['user_id'])) {
+    if (!isset($_SESSION['email'])) {
         header('Location: sign-in.php'); // Redirect to login page if not logged in
         exit();
     }
 
-    $user_id = $_SESSION['user_id'];
+    $email = $_SESSION['email'];
 
     // Fetch user data
     $query = "SELECT `account`.`EmailAddress`, `account`.`Password`, `account`.`AccountType`, `librarymember`.`FirstName`, `librarymember`.`LastName`, `librarymember`.`MembershipType`, `librarymember`.`ProfileImage`  
     FROM `account` 
     JOIN `librarymember` ON `account`.`AccountID` = `librarymember`.`AccountID` 
-    WHERE `account`.`EmailAddress` = '$user_id'";
+    WHERE `account`.`EmailAddress` = '$email'";
 
     $result = mysqli_query($conn, $query);
 
@@ -88,10 +88,10 @@
                 </div>
                 <div class=" flex items-center max-sm:flex-col-reverse max-sm:items-start">
                     <ul id="navigation" class=" flex flex-row gap-6 px-8 text-gray-400 font-medium max-sm:hidden max-sm:flex-col max-sm:px-4 max-sm:absolute max-sm:top-14 max-sm:bg-slate-800 max-sm:w-full max-sm:left-0 max-sm:gap-1 max-sm:pb-3 max-sm:rounded-b-lg">
-                        <a class="py-2 px-3 rounded-md hover:bg-hover hover:text-primary_text" href="<?php if ($user_id == "admin") {echo './Admin/index.php';} else {echo './Client/dashboard.php';}?>"><li>Dashboard</li></a>
-                        <a class="py-2 px-3 rounded-md hover:bg-hover hover:text-primary_text" href="<?php if ($user_id == "admin") {echo './Admin/book.php';} else {echo './Client/client.php';}?>"><li>Books</li></a>
+                        <a class="py-2 px-3 rounded-md hover:bg-hover hover:text-primary_text" href="<?php if ($user['AccountType'] == "admin") {echo './Admin/index.php';} else if ($user['AccountType'] == "librarian") {echo './Librarian/dashboard.php';} else {echo './Client/dashboard.php';}?>"><li>Dashboard</li></a>
+                        <a class="py-2 px-3 rounded-md hover:bg-hover hover:text-primary_text" href="<?php if ($user['AccountType'] == "admin" or $user['AccountType'] == 'librarian') {echo './Admin/book.php';} else {echo './Client/client.php';}?>"><li>Books</li></a>
                         <?php 
-                            if ($user_id == "admin") {
+                            if ($user['AccountType'] == "admin" or $user['AccountType'] == 'librarian') {
                                 echo '<a class="py-2 px-3 rounded-md hover:bg-hover hover:text-primary_text" href="./Admin/member.php"><li>Members</li></a><a class="py-2 px-3 rounded-md hover:bg-hover hover:text-primary_text" href="./Admin/checkout.php"><li>Checkout</li></a>';
                             }
                         ?>
@@ -168,7 +168,7 @@
 
                         <div>
                             <label for="file-upload"></label>
-                            <input type="file" name="file-upload" id="file-upload" class=" ms-3 block w-full text-sm border rounded-lg cursor-pointer text-gray-400 focus:outline-none bg-gray-700 border-gray-600 placeholder-gray-400" <?php if ($user['Password'] == 'admin') echo 'disabled'; ?>>
+                            <input type="file" name="file-upload" id="file-upload" class=" ms-3 block w-full text-sm border rounded-lg cursor-pointer text-gray-400 focus:outline-none bg-gray-700 border-gray-600 placeholder-gray-400" value="<?php echo base64_encode($user['ProfileImage']); ?>" <?php if ($user['Password'] == 'admin') echo 'disabled'; ?>>
                             <p class=" text-secondary_text mt-2 ml-3 font-normal">PNG, JPG, JPEG, or GIF (MAX. 16 Mb)</p>
                         </div>
                     </div>
