@@ -14,6 +14,7 @@ This project is a Checkout Book Management System designed to manage the checkou
   - [Documentation](#documentation)
     - [Example SQL Queries](#example-sql-queries)
     - [Screenshots of Tables in the phpMyAdmin database](#screenshots-of-tables-in-the-phpmyadmin-database)
+    - [Full Website](#full-website)
     - [Screenshots of the Website Pages](#screenshots-of-the-website-pages)
   - [Contributing](#contributing)
   - [License](#license)
@@ -133,6 +134,10 @@ WHERE `book`.`Title` = '$search';
 ![Checkout Table](./assets/img/image-2.png)
 
 ![Library Member Table](./assets/img/image-3.png)
+
+### Full Website
+
+
 
 ### Screenshots of the Website Pages
 

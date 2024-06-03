@@ -30,9 +30,6 @@ if (isset($_POST['submit-edit-book'])) {
             header('Location: ../Admin/book.php?error=Sorry, only JPG, JPEG, PNG and GIF images are supported.');
             exit();
         }
-    } else {
-        header('Location: ../Admin/book.php?error=' . urlencode('Error: ' . mysqli_error($conn)));
-        exit();
     }
 
     // Create the SQL UPDATE statement
